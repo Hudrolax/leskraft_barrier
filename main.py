@@ -11,6 +11,7 @@ class BarScanner:
 
 if __name__ == '__main__':
     print('hello')
+    print(serial.tools.list_ports)
     scanner = BarScanner('COM3')
-    _answer = scanner.port.readln()
+    _answer = scanner.port.readline()
     print(_answer)
