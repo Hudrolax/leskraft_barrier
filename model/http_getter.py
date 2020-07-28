@@ -56,7 +56,7 @@ class HttpGetter:
             self.logger.error(f'get_admin_codes connection error to http://{self._server}gg:{self._port}{self._admin_codes_route}')
 
     def get_permission_by_code(self, code):
-        repr(code)
+        print(repr(code))
         print(self._db.admin_codes)
         if code in self._db.admin_codes:
             self._permission = True
