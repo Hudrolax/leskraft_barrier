@@ -17,7 +17,7 @@ else:
 
 class ArduinoBarrier(Observer):
     logger = logging.getLogger('ArduinoBarrier')
-    # logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.DEBUG)
     def __init__(self, model, port='COM4'):
         self.model = model
         self._initialized = False

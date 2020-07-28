@@ -20,7 +20,7 @@ class BarScanner:
     Класс оповещает модель о событии сканирования
     """
     logger = logging.getLogger('BarScanner')
-    # logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.DEBUG)
     def __init__(self, port, model):
         self.model = model
         self._initialized = False

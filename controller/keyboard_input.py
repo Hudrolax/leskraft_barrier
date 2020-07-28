@@ -9,7 +9,7 @@ LOG_LEVEL = logging.WARNING
 
 class Keyboard:
     logger = logging.getLogger('Keyboard')
-    # logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.DEBUG)
     def __init__(self, db):
         # Start keyboart queue thread
         self._db = db

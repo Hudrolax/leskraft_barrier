@@ -16,7 +16,7 @@ class HttpGetter:
     в центральной базе по роуту, передавая отcканированный ШК
     """
     logger = logging.getLogger('HttpGetter')
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging.DEBUG)
     def __init__(self, db, server, port, open_gate_route, admin_codes_route, user, password):
         self._observers = []
         self._db = db
