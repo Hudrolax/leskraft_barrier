@@ -43,11 +43,14 @@ class Keyboard(LoggerMeta):
                 elif 'debug' in cmd_list:
                     for cl in self.logger_level_classes:
                         cl.set_debug()
+                        print(f'Set DEBUG log level for {cl}')
                 elif 'info' in cmd_list:
                     for cl in self.logger_level_classes:
                         cl.set_info()
+                        print(f'Set INFO log level for {cl}')
                 elif 'warning' in cmd_list:
                     for cl in self.logger_level_classes:
                         cl.set_warning()
+                        print(f'Set WARNING log level for {cl}')
             except:
                 continue
