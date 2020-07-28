@@ -29,7 +29,7 @@ class BarScanner:
         _ports = list(lp.comports())
         for _port in _ports:
             if _port.device == port:
-                self._com_port = serial.Serial(_port.device, 115200, timeout=5)
+                self._com_port = serial.Serial(_port.device, 115200)
                 self._initialized = True
         if not self._initialized:
             self.logger.critical(f'ERROR!!! Port {port} does not exist')
