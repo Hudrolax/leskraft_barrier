@@ -3,6 +3,7 @@ import serial.tools.list_ports as lp
 import threading
 import logging
 from datetime import datetime
+from utility.observer import LoggerMeta
 import re
 
 WRITE_LOG_TO_FILE = False
@@ -15,7 +16,7 @@ if WRITE_LOG_TO_FILE:
 else:
     logging.basicConfig(format=LOG_FORMAT, level=LOG_LEVEL, datefmt='%d/%m/%y %H:%M:%S')
 
-class BarScanner:
+class BarScanner(LoggerMeta):
     """
     Класс BarScanner представляет собой реализацию модели сканера ШК.
     Класс оповещает модель о событии сканирования
@@ -29,7 +30,7 @@ class BarScanner:
         _ports = list(lp.comports())
         for _port in _ports:
             if _port.device == port:
-                self._com_port = serial.Serial(_port.device, 115200)
+                self._com_port = serial.Serial(_port.device, 115200, timeout=60)
                 self._initialized = True
         if not self._initialized:
             self.logger.critical(f'ERROR!!! Port {port} does not exist')
@@ -37,15 +38,23 @@ class BarScanner:
         self._thread = threading.Thread(target=self._watch_port, args=(), daemon=True)
         self._thread.start()
 
+    def set_debug(self):
+        self.logger.setLevel(logging.DEBUG)
+
+    def set_info(self):
+        self.logger.setLevel(logging.INFO)
+
+    def set_warning(self):
+        self.logger.setLevel(logging.WARNING)
+
     # Поток считывания данных со сканера и вызывает функцию у модели
     def _watch_port(self):
         while True:
             self.logger.info('Wait for scan barcode...')
             try:
                 _answer = self._com_port.readline().decode().replace('\n', '')
-                re.sub(r'[^0-9]', r'', _answer)
-                print(_answer.isdigit())
-                self.logger.info(f'{datetime.strftime(datetime.now(), "%d.%m.%y %H:%M:%S")}: {_answer}')
+                # re.sub(r'[^0-9]', r'', _answer)
+                self.logger.info(f'{datetime.strftime(datetime.now(), "%d.%m.%y %H:%M:%S")}: {repr(_answer)}')
             except:
                 continue
             if _answer != "":

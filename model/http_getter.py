@@ -4,13 +4,14 @@ import json
 from time import sleep
 import threading
 import copy
+from utility.observer import LoggerMeta
 
 WRITE_LOG_TO_FILE = False
 LOG_FORMAT = '%(name)s (%(levelname)s) %(asctime)s: %(message)s'
 #LOG_LEVEL = logging.DEBUG
 LOG_LEVEL = logging.WARNING
 
-class HttpGetter:
+class HttpGetter(LoggerMeta):
     """
     Класс описывает объект, который запрашивает разрешение на открытие шлагбаума
     в центральной базе по роуту, передавая отcканированный ШК
@@ -34,6 +35,15 @@ class HttpGetter:
     def permission(self):
         return self._permission
 
+    def set_debug(self):
+        self.logger.setLevel(logging.DEBUG)
+
+    def set_info(self):
+        self.logger.setLevel(logging.INFO)
+
+    def set_warning(self):
+        self.logger.setLevel(logging.WARNING)
+
     def _get_admin_codes_thread_func(self):
         while True:
             self.get_admin_codes()
@@ -56,8 +66,6 @@ class HttpGetter:
             self.logger.error(f'get_admin_codes connection error to http://{self._server}gg:{self._port}{self._admin_codes_route}')
 
     def get_permission_by_code(self, code):
-        print(repr(code))
-        print(self._db.admin_codes)
         if code in self._db.admin_codes:
             self._permission = True
             self.logger.info(f'Нашел код {code} в _db.admin_codes')
