@@ -39,11 +39,11 @@ class BarScanner:
     # Поток считывания данных со сканера и вызывает функцию у модели
     def _watch_port(self):
         while True:
-            self.logger.debug('Wait for scan barcode...')
+            self.logger.info('Wait for scan barcode...')
             try:
                 _answer = self._com_port.readline().decode().replace('\n','')
+                self.logger.info(f'{datetime.strftime(datetime.now(), "%d.%m.%y %H:%M:%S")}: {_answer}')
             except:
                 continue
             if _answer != "":
-                self.logger.debug(f'{datetime.strftime(datetime.now(), "%d.%m.%y %H:%M:%S")}: {_answer}')
                 self.model.get_permission_by_code(_answer)
