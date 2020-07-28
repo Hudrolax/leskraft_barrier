@@ -57,6 +57,7 @@ class HttpGetter:
 
     def get_permission_by_code(self, code):
         print(code)
+        print(type(code))
         print(self._db.admin_codes)
         if code in self._db.admin_codes:
             self._permission = True
