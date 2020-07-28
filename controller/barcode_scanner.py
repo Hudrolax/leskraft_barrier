@@ -28,7 +28,7 @@ class BarScanner:
         _ports = list(lp.comports())
         for _port in _ports:
             if _port.device == port:
-                self._com_port = serial.Serial(_port.device, 115200)
+                self._com_port = serial.Serial(_port.device, 115200, timeout=5)
                 self._initialized = True
         if not self._initialized:
             self.logger.critical(f'ERROR!!! Port {port} does not exist')
@@ -40,7 +40,10 @@ class BarScanner:
     def _watch_port(self):
         while True:
             self.logger.debug('Wait for scan barcode...')
-            _answer = self._com_port.readline().decode().replace('\n','')
+            try:
+                _answer = self._com_port.readline().decode().replace('\n','')
+            except:
+                continue
             if _answer != "":
                 self.logger.debug(f'{datetime.strftime(datetime.now(), "%d.%m.%y %H:%M:%S")}: {_answer}')
                 self.model.get_permission_by_code(_answer)
