@@ -23,6 +23,19 @@ class BarScanner(LoggerMeta):
     """
     logger = logging.getLogger('BarScanner')
     logger.setLevel(logging.DEBUG)
+
+    @staticmethod
+    def set_debug():
+        BarScanner.logger.setLevel(logging.DEBUG)
+
+    @staticmethod
+    def set_info():
+        BarScanner.logger.setLevel(logging.INFO)
+
+    @staticmethod
+    def set_warning():
+        BarScanner.logger.setLevel(logging.WARNING)
+
     def __init__(self, port, model):
         self.model = model
         self._initialized = False
@@ -37,15 +50,6 @@ class BarScanner(LoggerMeta):
             raise Exception(f'ERROR!!! Port {port} does not exist')
         self._thread = threading.Thread(target=self._watch_port, args=(), daemon=True)
         self._thread.start()
-
-    def set_debug(self):
-        self.logger.setLevel(logging.DEBUG)
-
-    def set_info(self):
-        self.logger.setLevel(logging.INFO)
-
-    def set_warning(self):
-        self.logger.setLevel(logging.WARNING)
 
     # Поток считывания данных со сканера и вызывает функцию у модели
     def _watch_port(self):

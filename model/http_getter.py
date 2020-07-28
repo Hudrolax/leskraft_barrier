@@ -18,6 +18,19 @@ class HttpGetter(LoggerMeta):
     """
     logger = logging.getLogger('HttpGetter')
     logger.setLevel(logging.INFO)
+
+    @staticmethod
+    def set_debug():
+        HttpGetter.logger.setLevel(logging.DEBUG)
+
+    @staticmethod
+    def set_info():
+        HttpGetter.logger.setLevel(logging.INFO)
+
+    @staticmethod
+    def set_warning():
+        HttpGetter.logger.setLevel(logging.WARNING)
+
     def __init__(self, db, server, port, open_gate_route, admin_codes_route, user, password):
         self._observers = []
         self._db = db
@@ -34,15 +47,6 @@ class HttpGetter(LoggerMeta):
     @property
     def permission(self):
         return self._permission
-
-    def set_debug(self):
-        self.logger.setLevel(logging.DEBUG)
-
-    def set_info(self):
-        self.logger.setLevel(logging.INFO)
-
-    def set_warning(self):
-        self.logger.setLevel(logging.WARNING)
 
     def _get_admin_codes_thread_func(self):
         while True:

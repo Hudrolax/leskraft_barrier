@@ -16,13 +16,16 @@ class LoggerMeta(metaclass = ABCMeta):
     Абстрактный суперкласс для всех логгированных классов.
     """
     @abstractmethod
-    def set_debug(self):
+    @staticmethod
+    def set_debug():
         pass
 
     @abstractmethod
-    def set_info(self):
+    @staticmethod
+    def set_info():
         pass
 
     @abstractmethod
-    def set_warning(self):
+    @staticmethod
+    def set_warning():
         pass
