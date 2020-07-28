@@ -42,7 +42,7 @@ class BarScanner:
         while True:
             self.logger.info('Wait for scan barcode...')
             try:
-                _answer = self._com_port.readline().decode()
+                _answer = self._com_port.readline().decode().replace('\n', '')
                 re.sub(r'[^0-9]', r'', _answer)
                 print(_answer.isdigit())
                 self.logger.info(f'{datetime.strftime(datetime.now(), "%d.%m.%y %H:%M:%S")}: {_answer}')
