@@ -48,6 +48,7 @@ class ArduinoBarrier(Observer):
             self.logger.debug('открыл шлагбаум')
         except:
             self.logger.error('Что-то c макетом шлагбаума. Не смог отправить команду ОТКРЫТЬ')
+            self._inicialize_arduino()
 
     def close(self):
         try:
@@ -55,6 +56,7 @@ class ArduinoBarrier(Observer):
             self.logger.debug('закрыл шлагбаум')
         except:
             self.logger.error('Что-то c макетом шлагбаума. Не смог отправить команду ЗАКРЫТЬ')
+            self._inicialize_arduino()
 
     def modelIsChanged(self):
         self.open()
