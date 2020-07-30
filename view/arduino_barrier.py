@@ -57,10 +57,9 @@ class ArduinoBarrier(Observer):
             self.logger.error('Что-то c макетом шлагбаума. Не смог отправить команду ЗАКРЫТЬ')
 
     def modelIsChanged(self):
-        if self.model is None or self.model is not None and self.model.permission:
-            self.open()
-            sleep(20)
-            self.close()
+        self.open()
+        sleep(20)
+        self.close()
 
 if __name__ == '__main__':
     barrier = ArduinoBarrier(None, 'COM4')

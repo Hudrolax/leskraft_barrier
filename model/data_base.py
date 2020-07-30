@@ -12,7 +12,7 @@ class DB:
         self._sql_thread = threading.Thread(target=self._threaded_sql_func, args=(), daemon=True)
         self._sql_thread.start()
         self.connection = None
-        self.admin_codes = []
+        self.open_codes = []
         self._commit = False
         while not self._init:
             sleep(0.1)
@@ -21,11 +21,11 @@ class DB:
         self._commit = True
 
     def find_code(self, code):
-        return code in self.admin_codes
+        return code in self.open_codes
 
-    def print_admin_codes(self):
-        answer = 'admin_codes:\n'
-        for code in self.admin_codes:
+    def print_open_codes(self):
+        answer = 'open_codes:\n'
+        for code in self.open_codes:
             answer += code + '\n'
         return answer
 
@@ -40,23 +40,23 @@ class DB:
         self._init = True
         while True:
             if self._commit:
-                self._update_admin_codes()
+                self._update_open_codes()
                 self._commit = False
             else:
                 sleep(0.1)
 
     def _load_codes_from_db(self):
-        self.admin_codes = []
+        self.open_codes = []
         cur = self.connection.cursor()
         cur.execute(f'''SELECT code FROM admin_codes''')
         _list = cur.fetchall()
         for el in _list:
-            self.admin_codes.append(el[0])
+            self.open_codes.append(el[0])
 
-    def _update_admin_codes(self):
+    def _update_open_codes(self):
         cur = self.connection.cursor()
         cur.execute(f'''DELETE FROM admin_codes''')
-        for code in self.admin_codes:
+        for code in self.open_codes:
             cur.execute(f'''INSERT INTO admin_codes VALUES ({code})''')
         self.connection.commit()
         cur.close()
@@ -69,8 +69,8 @@ class DB:
             return True
         return False
 
-    def _print_admin_codes_from_db(self):
-        answer = 'admin_codes:\n'
+    def _print_open_codes_from_db(self):
+        answer = 'open_codes:\n'
         cur = self.connection.cursor()
         cur.execute(f"SELECT * FROM `admin_codes`")
         rows = cur.fetchall()

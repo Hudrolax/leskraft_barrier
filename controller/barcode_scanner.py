@@ -57,8 +57,8 @@ class BarScanner(LoggerMeta):
                     self._com_port = serial.Serial(_port.device, 9600, timeout=60)
                     self._initialized = True
             if not self._initialized:
-                self.logger.critical(f'ERROR!!! Port {self.port} does not exist')
-                raise Exception(f'ERROR!!! Port {self.port} does not exist')
+                self.logger.critical(f'ERROR!!! Port {self._port} does not exist')
+                raise Exception(f'ERROR!!! Port {self._port} does not exist')
 
     def _get_bar_code_threaded(self):
         while True:
@@ -66,7 +66,6 @@ class BarScanner(LoggerMeta):
                 self.logger.info('Wait for scan barcode...')
                 try:
                     _answer = self._com_port.readline().decode().replace('\n', '')
-                    # re.sub(r'[^0-9]', r'', _answer)
                     self.logger.info(f'{datetime.strftime(datetime.now(), "%d.%m.%y %H:%M:%S")}: {repr(_answer)}')
                 except:
                     self._inicialize_com_port()

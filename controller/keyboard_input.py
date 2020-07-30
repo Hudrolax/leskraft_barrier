@@ -42,8 +42,8 @@ class Keyboard(LoggerMeta):
                 input_str = input()
                 print('Enter command: ' + input_str)
                 cmd_list = input_str.split(' ')
-                if 'admins' in cmd_list:
-                    print(self._db.print_admin_codes())
+                if 'codes' in cmd_list:
+                    print(self._db.print_open_codes())
                 elif 'debug' in cmd_list:
                     for cl in self.logger_level_classes:
                         cl.set_debug()
