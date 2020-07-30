@@ -19,25 +19,42 @@ class ArduinoBarrier(Observer):
     logger = logging.getLogger('ArduinoBarrier')
     logger.setLevel(logging.DEBUG)
     def __init__(self, model, port='COM4'):
+        self._port = port
+        self._com_port = None
         self.model = model
         self._initialized = False
-        self._com_port = None
-        _ports = list(lp.comports())
-        for _port in _ports:
-            if _port.device == port:
-                self._com_port = serial.Serial(_port.device, 115200)
-                self._initialized = True
+        self._inicialize_arduino()
+
+
+    def _inicialize_arduino(self):
         if not self._initialized:
-            self.logger.critical(f'ERROR!!! Port {port} does not exist')
-            raise Exception(f'ERROR!!! Port {port} does not exist')
+            try:
+                self._com_port.close()
+            except:
+                pass
+            self._com_port = None
+            _ports = list(lp.comports())
+            for _port in _ports:
+                if _port.device == self._port:
+                    self._com_port = serial.Serial(_port.device, 115200)
+                    self._initialized = True
+            if not self._initialized:
+                self.logger.critical(f'ERROR!!! Port {self._port} does not exist')
+                raise Exception(f'ERROR!!! Port {self._port} does not exist')
 
     def open(self):
-        self._com_port.write('cmd=90\r'.encode())
-        self.logger.debug('открыл шлагбаум')
+        try:
+            self._com_port.write('cmd=90\r'.encode())
+            self.logger.debug('открыл шлагбаум')
+        except:
+            self.logger.error('Что-то c макетом шлагбаума. Не смог отправить команду ОТКРЫТЬ')
 
     def close(self):
-        self._com_port.write('cmd=0\r'.encode())
-        self.logger.debug('закрыл шлагбаум')
+        try:
+            self._com_port.write('cmd=0\r'.encode())
+            self.logger.debug('закрыл шлагбаум')
+        except:
+            self.logger.error('Что-то c макетом шлагбаума. Не смог отправить команду ЗАКРЫТЬ')
 
     def modelIsChanged(self):
         if self.model is None or self.model is not None and self.model.permission:
