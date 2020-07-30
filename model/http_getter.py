@@ -62,7 +62,7 @@ class HttpGetter(LoggerMeta):
                 decoded_json = json.loads(_answer)
                 self.logger.debug(f'Get JSON: {decoded_json}')
                 _codelist = decoded_json.get('open_codes')
-                self._db.admin_codes = copy.deepcopy(_codelist)
+                self._db.open_codes = copy.deepcopy(_codelist)
                 self._db.commit()
             except:
                 self.logger.error('Не смог распарсить JSON')
@@ -80,9 +80,9 @@ class HttpGetter(LoggerMeta):
                 f'send_opening_event connection error to http://{self._server}:{self._port}{self._send_open_event_route}')
 
     def get_permission_by_code(self, code):
-        if code in self._db.admin_codes:
+        if code in self._db.open_codes:
             self._permission = True
-            self.logger.info(f'Получено разрешение на открытие по коду {code} в _db.admin_codes')
+            self.logger.info(f'Получено разрешение на открытие по коду {code} в _db.open_codes')
             self.notify_observers()
             self._send_opening_event(code)
         else:
@@ -98,17 +98,3 @@ class HttpGetter(LoggerMeta):
     def notify_observers(self):
         for x in self._observers:
             x.modelIsChanged()
-
-if __name__ == '__main__':
-    bar_scanner_com_port = 'COM3'
-    opengate_server = 'golden1'
-    opengate_port = '80'
-    opengate_route = '/trade2016donate/hs/barrier/get_perrmission'
-    admin_codes_route = '/trade2016donate/hs/barrier/get_admin_codes'
-    opengate_user = 'http_services'
-    opengate_password = 'lk93295841lk'
-    from model.data_base import DB
-    data_base = DB()
-    http_getter = HttpGetter(data_base, opengate_server, opengate_port, opengate_route, admin_codes_route, opengate_user, opengate_password)
-    http_getter.get_admin_codes()
-    print(data_base.print_admin_codes())
