@@ -4,7 +4,7 @@ import threading
 import logging
 from datetime import datetime
 from utility.observer import LoggerMeta
-import re
+from time import sleep
 
 WRITE_LOG_TO_FILE = False
 LOG_FORMAT = '%(name)s (%(levelname)s) %(asctime)s: %(message)s'
@@ -38,28 +38,40 @@ class BarScanner(LoggerMeta):
 
     def __init__(self, port, model):
         self.model = model
-        self._initialized = False
+        self._port = port
         self._com_port = None
-        _ports = list(lp.comports())
-        for _port in _ports:
-            if _port.device == port:
-                self._com_port = serial.Serial(_port.device, 115200, timeout=60)
-                self._initialized = True
-        if not self._initialized:
-            self.logger.critical(f'ERROR!!! Port {port} does not exist')
-            raise Exception(f'ERROR!!! Port {port} does not exist')
-        self._thread = threading.Thread(target=self._watch_port, args=(), daemon=True)
+        self._initialized = False
+        self._inicialize_com_port()
+        self._thread = threading.Thread(target=self._get_bar_code_threaded, args=(), daemon=True)
         self._thread.start()
 
-    # Поток считывания данных со сканера и вызывает функцию у модели
-    def _watch_port(self):
-        while True:
-            self.logger.info('Wait for scan barcode...')
+    def _inicialize_com_port(self):
+        if not self._initialized:
             try:
-                _answer = self._com_port.readline().decode().replace('\n', '')
-                # re.sub(r'[^0-9]', r'', _answer)
-                self.logger.info(f'{datetime.strftime(datetime.now(), "%d.%m.%y %H:%M:%S")}: {repr(_answer)}')
+                self._com_port.close()
             except:
-                continue
-            if _answer != "":
-                self.model.get_permission_by_code(_answer)
+                pass
+            _ports = list(lp.comports())
+            for _port in _ports:
+                if _port.device == self._port:
+                    self._com_port = serial.Serial(_port.device, 9600, timeout=60)
+                    self._initialized = True
+            if not self._initialized:
+                self.logger.critical(f'ERROR!!! Port {self.port} does not exist')
+                raise Exception(f'ERROR!!! Port {self.port} does not exist')
+
+    def _get_bar_code_threaded(self):
+        while True:
+            if self._initialized:
+                self.logger.info('Wait for scan barcode...')
+                try:
+                    _answer = self._com_port.readline().decode().replace('\n', '')
+                    # re.sub(r'[^0-9]', r'', _answer)
+                    self.logger.info(f'{datetime.strftime(datetime.now(), "%d.%m.%y %H:%M:%S")}: {repr(_answer)}')
+                except:
+                    self._inicialize_com_port()
+                    continue
+                if _answer != "":
+                    self.model.get_permission_by_code(_answer)
+            else:
+                sleep(0.5)
