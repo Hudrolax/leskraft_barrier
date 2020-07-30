@@ -60,7 +60,7 @@ class ArduinoBarrier(Observer):
 
     def modelIsChanged(self):
         self.open()
-        sleep(20)
+        sleep(5)
         self.close()
 
 if __name__ == '__main__':
