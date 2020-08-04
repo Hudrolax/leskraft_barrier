@@ -14,18 +14,20 @@ LOG_FORMAT = '%(name)s (%(levelname)s) %(asctime)s: %(message)s'
 #LOG_LEVEL = logging.WARNING
 LOG_LEVEL = logging.INFO
 
-bar_scanner_com_port = os.getenv("BAR_SCANNER_COM_PORT")
-opengate_server = os.getenv("OPENGATE_SERVER")
-opengate_port = os.getenv("OPENGATE_PORT")
-open_codes_route = os.getenv("OPEN_CODES_ROUTE")
-send_open_event_route = os.getenv("SEND_OPEN_EVENTS_ROUTE")
-opengate_user = os.getenv("OPENGATE_USER")
-opengate_password = os.getenv("OPENGATE_PASS")
-
 if __name__ == '__main__':
     dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+    print(dotenv_path)
     if os.path.exists(dotenv_path):
         load_dotenv(dotenv_path)
+
+    bar_scanner_com_port = os.getenv("BAR_SCANNER_COM_PORT")
+    opengate_server = os.getenv("OPENGATE_SERVER")
+    opengate_port = os.getenv("OPENGATE_PORT")
+    open_codes_route = os.getenv("OPEN_CODES_ROUTE")
+    send_open_event_route = os.getenv("SEND_OPEN_EVENTS_ROUTE")
+    opengate_user = os.getenv("OPENGATE_USER")
+    opengate_password = os.getenv("OPENGATE_PASS")
+
     print('hello')
     data_base = DB()
     http_getter = HttpGetter(data_base, opengate_server, opengate_port, open_codes_route, send_open_event_route, opengate_user, opengate_password)
