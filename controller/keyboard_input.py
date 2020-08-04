@@ -1,6 +1,6 @@
 import threading
 import logging
-from utility.observer import LoggerMeta
+from utility.logger_super import LoggerSuper
 from model.http_getter import HttpGetter
 from controller.barcode_scanner import BarScanner
 
@@ -10,21 +10,8 @@ LOG_FORMAT = '%(name)s (%(levelname)s) %(asctime)s: %(message)s'
 LOG_LEVEL = logging.WARNING
 
 
-class Keyboard(LoggerMeta):
+class Keyboard(LoggerSuper):
     logger = logging.getLogger('Keyboard')
-    logger.setLevel(logging.DEBUG)
-
-    @staticmethod
-    def set_debug():
-        Keyboard.logger.setLevel(logging.DEBUG)
-
-    @staticmethod
-    def set_info():
-        Keyboard.logger.setLevel(logging.INFO)
-
-    @staticmethod
-    def set_warning():
-        Keyboard.logger.setLevel(logging.WARNING)
 
     def __init__(self, db):
         # Start keyboart queue thread

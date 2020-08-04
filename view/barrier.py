@@ -1,4 +1,5 @@
 from utility.observer import Observer
+from utility.logger_super import LoggerSuper
 from time import sleep
 
 import logging
@@ -13,12 +14,14 @@ if WRITE_LOG_TO_FILE:
 else:
     logging.basicConfig(format=LOG_FORMAT, level=LOG_LEVEL, datefmt='%d/%m/%y %H:%M:%S')
 
-class Barrier(Observer):
-    logger = logging.getLogger('ArduinoBarrier')
-    logger.setLevel(logging.DEBUG)
+class Barrier(Observer, LoggerSuper):
+    """
+    Класс описывает управление шлагбаумом
+    """
+    logger = logging.getLogger('Barrier')
+
     def __init__(self, model):
         self.model = model
-
 
     def open(self):
         self.logger.debug('открыл шлагбаум')

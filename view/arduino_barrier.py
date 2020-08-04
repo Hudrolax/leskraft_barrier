@@ -1,6 +1,7 @@
 from utility.observer import Observer
 import serial
 import serial.tools.list_ports as lp
+from utility.logger_super import LoggerSuper
 from time import sleep
 
 import logging
@@ -15,9 +16,12 @@ if WRITE_LOG_TO_FILE:
 else:
     logging.basicConfig(format=LOG_FORMAT, level=LOG_LEVEL, datefmt='%d/%m/%y %H:%M:%S')
 
-class ArduinoBarrier(Observer):
+class ArduinoBarrier(Observer, LoggerSuper):
+    """
+    Класс описывает управление arduino-шлагбаумом (макетный вариант)
+    """
     logger = logging.getLogger('ArduinoBarrier')
-    logger.setLevel(logging.DEBUG)
+
     def __init__(self, model, port='COM4'):
         self._port = port
         self._com_port = None

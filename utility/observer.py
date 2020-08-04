@@ -10,22 +10,3 @@ class Observer(metaclass = ABCMeta):
         Метод который будет вызван у наблюдателя при изменении модели.
         """
         pass
-
-class LoggerMeta(metaclass = ABCMeta):
-    """
-    Абстрактный суперкласс для всех логгированных классов.
-    """
-    @staticmethod
-    @abstractmethod
-    def set_debug():
-        pass
-
-    @staticmethod
-    @abstractmethod
-    def set_info():
-        pass
-
-    @staticmethod
-    @abstractmethod
-    def set_warning():
-        pass

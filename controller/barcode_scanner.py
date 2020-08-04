@@ -3,7 +3,7 @@ import serial.tools.list_ports as lp
 import threading
 import logging
 from datetime import datetime
-from utility.observer import LoggerMeta
+from utility.logger_super import LoggerSuper
 from time import sleep
 
 WRITE_LOG_TO_FILE = False
@@ -16,25 +16,12 @@ if WRITE_LOG_TO_FILE:
 else:
     logging.basicConfig(format=LOG_FORMAT, level=LOG_LEVEL, datefmt='%d/%m/%y %H:%M:%S')
 
-class BarScanner(LoggerMeta):
+class BarScanner(LoggerSuper):
     """
     Класс BarScanner представляет собой реализацию модели сканера ШК.
     Класс оповещает модель о событии сканирования
     """
     logger = logging.getLogger('BarScanner')
-    logger.setLevel(logging.DEBUG)
-
-    @staticmethod
-    def set_debug():
-        BarScanner.logger.setLevel(logging.DEBUG)
-
-    @staticmethod
-    def set_info():
-        BarScanner.logger.setLevel(logging.INFO)
-
-    @staticmethod
-    def set_warning():
-        BarScanner.logger.setLevel(logging.WARNING)
 
     def __init__(self, port, model):
         self.model = model

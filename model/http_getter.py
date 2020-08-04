@@ -4,32 +4,18 @@ import json
 from time import sleep
 import threading
 import copy
-from utility.observer import LoggerMeta
+from utility.logger_super import LoggerSuper
 
 WRITE_LOG_TO_FILE = False
 LOG_FORMAT = '%(name)s (%(levelname)s) %(asctime)s: %(message)s'
 #LOG_LEVEL = logging.DEBUG
 LOG_LEVEL = logging.WARNING
 
-class HttpGetter(LoggerMeta):
+class HttpGetter(LoggerSuper):
     """
-    Класс описывает объект, который запрашивает разрешение на открытие шлагбаума
-    в центральной базе по роуту, передавая отcканированный ШК
+    Класс описывает объект, который запрашивает список ШК из центральной базы и выдает разрешение на открытие шлагбаума
     """
     logger = logging.getLogger('HttpGetter')
-    logger.setLevel(logging.INFO)
-
-    @staticmethod
-    def set_debug():
-        HttpGetter.logger.setLevel(logging.DEBUG)
-
-    @staticmethod
-    def set_info():
-        HttpGetter.logger.setLevel(logging.INFO)
-
-    @staticmethod
-    def set_warning():
-        HttpGetter.logger.setLevel(logging.WARNING)
 
     def __init__(self, db, server, port, open_codes_route, send_open_event_route, user, password):
         self._observers = []

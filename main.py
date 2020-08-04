@@ -18,6 +18,7 @@ if __name__ == '__main__':
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
     load_dotenv(dotenv_path=os.path.join(BASE_DIR, ".env"))
 
+    watchdog_com_port = os.getenv("WATCHDOG_COM_PORT")
     bar_scanner_com_port = os.getenv("BAR_SCANNER_COM_PORT")
     opengate_server = os.getenv("OPENGATE_SERVER")
     opengate_port = os.getenv("OPENGATE_PORT")
