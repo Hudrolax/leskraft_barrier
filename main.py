@@ -13,7 +13,8 @@ import logging
 if __name__ == '__main__':
     WRITE_LOG_TO_FILE = False
     LOG_FORMAT = '%(name)s (%(levelname)s) %(asctime)s: %(message)s'
-    LOG_LEVEL = logging.WARNING
+    LOG_LEVEL = logging.INFO
+    logger = logging.getLogger('main')
 
     if WRITE_LOG_TO_FILE:
         logging.basicConfig(filename='leskraft_barrier.txt', filemode='w', format=LOG_FORMAT, level=LOG_LEVEL,
@@ -33,11 +34,16 @@ if __name__ == '__main__':
     opengate_user = os.getenv("OPENGATE_USER")
     opengate_password = os.getenv("OPENGATE_PASS")
 
-    print('hello')
+    logger.info("Let's go")
+    logger.info('start watchdog')
     watchdog = WatchDog(watchdog_com_port)
+    logger.info('init database')
     data_base = DB()
+    logger.info('init HTTP exchanging')
     http_getter = HttpGetter(data_base, opengate_server, opengate_port, open_codes_route, send_open_event_route, opengate_user, opengate_password)
+    logger.info('init BAR scanner')
     scanner = BarScanner(bar_scanner_com_port, http_getter)
+    logger.info('init barrier')
     barrier = Barrier(http_getter)
     http_getter.add_observer(barrier)
 
