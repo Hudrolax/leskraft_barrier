@@ -22,6 +22,7 @@ class BarScanner(LoggerSuper):
         self._inicialize_com_port()
         self._thread = threading.Thread(target=self._get_bar_code_threaded, args=(), daemon=True)
         self._thread.start()
+        self.logger.info('BarScanner initialized at port ' + self._port)
 
     def _inicialize_com_port(self):
         if not self._initialized:
@@ -39,6 +40,7 @@ class BarScanner(LoggerSuper):
                 raise Exception(f'ERROR!!! Port {self._port} does not exist')
 
     def _get_bar_code_threaded(self):
+        sleep(1)
         while True:
             if self._initialized:
                 self.logger.info('Wait for scan barcode...')

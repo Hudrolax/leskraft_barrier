@@ -14,10 +14,10 @@ class Barrier(Observer, LoggerSuper):
         self.model = model
 
     def open(self):
-        self.logger.debug('открыл шлагбаум')
+        self.logger.info('открыл шлагбаум')
 
     def close(self):
-        self.logger.debug('закрыл шлагбаум')
+        self.logger.info('закрыл шлагбаум')
 
     def modelIsChanged(self):
         self.open()
