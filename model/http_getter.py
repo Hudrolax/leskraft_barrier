@@ -67,7 +67,7 @@ class HttpGetter(LoggerMeta):
             except:
                 self.logger.error('Не смог распарсить JSON')
         except:
-            self.logger.error(f'get_open_codes connection error to http://{self._server}gg:{self._port}{self._open_codes_route}')
+            self.logger.error(f'get_open_codes connection error to http://{self._server}:{self._port}{self._open_codes_route}')
 
     def _send_opening_event(self, code):
         try:
