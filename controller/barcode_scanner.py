@@ -41,12 +41,15 @@ class BarScanner(LoggerSuper):
 
     def _get_bar_code_threaded(self):
         sleep(1)
+        _last_barcode = None
         while True:
             if self._initialized:
-                self.logger.info('Wait for scan barcode...')
+                if _last_barcode != '':
+                    self.logger.info('Wait for scan barcode...')
                 try:
                     _answer = self._com_port.readline().decode().replace('\n', '')
-                    self.logger.info(f'{datetime.strftime(datetime.now(), "%d.%m.%y %H:%M:%S")}: {repr(_answer)}')
+                    if _answer != '':
+                        self.logger.info(f'{datetime.strftime(datetime.now(), "%d.%m.%y %H:%M:%S")}: {repr(_answer)}')
                 except:
                     self._inicialize_com_port()
                     continue
