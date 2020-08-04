@@ -6,10 +6,6 @@ import threading
 import copy
 from utility.logger_super import LoggerSuper
 
-WRITE_LOG_TO_FILE = False
-LOG_FORMAT = '%(name)s (%(levelname)s) %(asctime)s: %(message)s'
-#LOG_LEVEL = logging.DEBUG
-LOG_LEVEL = logging.WARNING
 
 class HttpGetter(LoggerSuper):
     """

@@ -1,5 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
+
 class Observer(metaclass = ABCMeta):
     """
     Абстрактный суперкласс для всех наблюдателей.

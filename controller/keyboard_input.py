@@ -4,13 +4,11 @@ from utility.logger_super import LoggerSuper
 from model.http_getter import HttpGetter
 from controller.barcode_scanner import BarScanner
 
-WRITE_LOG_TO_FILE = False
-LOG_FORMAT = '%(name)s (%(levelname)s) %(asctime)s: %(message)s'
-#LOG_LEVEL = logging.DEBUG
-LOG_LEVEL = logging.WARNING
-
 
 class Keyboard(LoggerSuper):
+    """
+    Класс реализует поток чтение и обработку команд из консоли
+    """
     logger = logging.getLogger('Keyboard')
 
     def __init__(self, db):

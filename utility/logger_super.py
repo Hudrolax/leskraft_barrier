@@ -1,5 +1,6 @@
 import logging
 
+
 class LoggerSuper:
     """
     Cуперкласс для всех логгированных классов.

@@ -2,6 +2,7 @@ import os.path
 import subprocess
 from sys import platform
 
+
 if __name__ == '__main__':
     if os.path.exists('requirements.txt'):
         if platform == "win32":

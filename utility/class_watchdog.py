@@ -4,11 +4,6 @@ from time import sleep
 from utility.logger_super import LoggerSuper
 import logging
 
-WRITE_LOG_TO_FILE = False
-LOG_FORMAT = '%(name)s (%(levelname)s) %(asctime)s: %(message)s'
-#LOG_LEVEL = logging.DEBUG
-#LOG_LEVEL = logging.WARNING
-LOG_LEVEL = logging.INFO
 
 class CWatchDog(LoggerSuper):
     logger = logging.getLogger('CWatchDog')

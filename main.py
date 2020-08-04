@@ -8,13 +8,18 @@ import os
 from dotenv import load_dotenv
 import logging
 
-WRITE_LOG_TO_FILE = False
-LOG_FORMAT = '%(name)s (%(levelname)s) %(asctime)s: %(message)s'
-#LOG_LEVEL = logging.DEBUG
-#LOG_LEVEL = logging.WARNING
-LOG_LEVEL = logging.INFO
 
 if __name__ == '__main__':
+    WRITE_LOG_TO_FILE = False
+    LOG_FORMAT = '%(name)s (%(levelname)s) %(asctime)s: %(message)s'
+    LOG_LEVEL = logging.WARNING
+
+    if WRITE_LOG_TO_FILE:
+        logging.basicConfig(filename='leskraft_barrier.txt', filemode='w', format=LOG_FORMAT, level=LOG_LEVEL,
+                            datefmt='%d/%m/%y %H:%M:%S')
+    else:
+        logging.basicConfig(format=LOG_FORMAT, level=LOG_LEVEL, datefmt='%d/%m/%y %H:%M:%S')
+
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
     load_dotenv(dotenv_path=os.path.join(BASE_DIR, ".env"))
 
@@ -36,5 +41,4 @@ if __name__ == '__main__':
 
     keyboard_input = Keyboard(data_base)
     while True:
-        # main loop
         sleep(1)

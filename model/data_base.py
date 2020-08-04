@@ -2,6 +2,7 @@ import sqlite3 as sql
 import threading
 from time import sleep
 
+
 class DB:
     """
     Класс описывает объект базы данных для ведения кодов ШК
