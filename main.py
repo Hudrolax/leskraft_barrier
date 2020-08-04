@@ -2,7 +2,7 @@ from controller.barcode_scanner import BarScanner
 from controller.keyboard_input import Keyboard
 from model.http_getter import HttpGetter
 from model.data_base import DB
-from view.arduino_barrier import ArduinoBarrier as Barrier
+from view.barrier import Barrier
 from time import sleep
 import os
 from dotenv import load_dotenv
@@ -18,7 +18,7 @@ if __name__ == '__main__':
     dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
     if os.path.exists(dotenv_path):
         print(f'{dotenv_path} loaded')
-        load_dotenv('/home/pi/leskraft_barrier/.env')
+        load_dotenv(dotenv_path)
     else:
         logging.critical('File .env not found!')
         raise Exception('File .env not found!')
