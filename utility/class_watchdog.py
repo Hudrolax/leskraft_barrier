@@ -5,7 +5,7 @@ from utility.logger_super import LoggerSuper
 import logging
 
 
-class CWatchDog(LoggerSuper):
+class WatchDog(LoggerSuper):
     logger = logging.getLogger('CWatchDog')
 
     def __init__(self, port):

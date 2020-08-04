@@ -3,6 +3,7 @@ from controller.keyboard_input import Keyboard
 from model.http_getter import HttpGetter
 from model.data_base import DB
 from view.barrier import Barrier
+from utility.class_watchdog import WatchDog
 from time import sleep
 import os
 from dotenv import load_dotenv
@@ -33,6 +34,7 @@ if __name__ == '__main__':
     opengate_password = os.getenv("OPENGATE_PASS")
 
     print('hello')
+    watchdog = WatchDog(watchdog_com_port)
     data_base = DB()
     http_getter = HttpGetter(data_base, opengate_server, opengate_port, open_codes_route, send_open_event_route, opengate_user, opengate_password)
     scanner = BarScanner(bar_scanner_com_port, http_getter)
