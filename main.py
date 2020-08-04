@@ -16,9 +16,12 @@ LOG_LEVEL = logging.INFO
 
 if __name__ == '__main__':
     dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-    print(dotenv_path)
     if os.path.exists(dotenv_path):
+        print('.env loaded')
         load_dotenv(dotenv_path)
+    else:
+        logging.critical('File .env not found!')
+        raise Exception('File .env not found!')
 
     bar_scanner_com_port = os.getenv("BAR_SCANNER_COM_PORT")
     opengate_server = os.getenv("OPENGATE_SERVER")
