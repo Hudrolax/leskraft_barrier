@@ -44,7 +44,7 @@ class LED:
                 GPIO.output(self._gpio, False)
             elif self._mode == 3:
                 GPIO.output(self._gpio, True)
-                sleep(0.25)
+                sleep(0.5)
                 GPIO.output(self._gpio, False)
             sleep(0.01)
 
