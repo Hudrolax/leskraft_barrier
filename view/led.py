@@ -32,21 +32,28 @@ class LED:
     def blink_fast(self):
         self._mode = 3
 
+    def _led_on(self):
+        GPIO.output(self._gpio, True)
+
+    def _led_off(self):
+        GPIO.output(self._gpio, False)
+
     def _led_threaded_func(self):
         while True:
             if self._mode == 0:
-                GPIO.output(self._gpio, False)
+                self._led_off()
             elif self._mode == 1:
-                GPIO.output(self._gpio, True)
+                self._led_on()
             elif self._mode == 2:
-                GPIO.output(self._gpio, True)
+                self._led_on()
                 sleep(1)
-                GPIO.output(self._gpio, False)
+                self._led_off()
             elif self._mode == 3:
-                GPIO.output(self._gpio, True)
+                self._led_on()
+                print('blink_on')
                 sleep(0.5)
-                GPIO.output(self._gpio, False)
-            sleep(0.01)
+                print('blink_off')
+                self._led_off()
 
 
 class LedAssembly(Observer, LoggerSuper):
