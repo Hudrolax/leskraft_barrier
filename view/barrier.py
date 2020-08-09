@@ -19,7 +19,8 @@ class Barrier(Observer, LoggerSuper):
     def close(self):
         self.logger.info('закрыл шлагбаум')
 
-    def modelIsChanged(self):
-        self.open()
-        sleep(5)
-        self.close()
+    def model_is_changed(self):
+        if self.model.permission:
+            self.open()
+            sleep(5)
+            self.close()

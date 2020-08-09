@@ -3,6 +3,7 @@ from controller.keyboard_input import Keyboard
 from model.http_getter import HttpGetter
 from model.data_base import DB
 from view.barrier import Barrier
+from view.led import LedAssembly
 from utility.class_watchdog import WatchDog
 from time import sleep
 import os
@@ -46,6 +47,7 @@ if __name__ == '__main__':
     logger.info('init barrier')
     barrier = Barrier(http_getter)
     http_getter.add_observer(barrier)
+    led_assembly = LedAssembly(http_getter)
 
     keyboard_input = Keyboard(data_base)
     while True:

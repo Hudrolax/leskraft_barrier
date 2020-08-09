@@ -6,7 +6,7 @@ class Observer(metaclass = ABCMeta):
     Абстрактный суперкласс для всех наблюдателей.
     """
     @abstractmethod
-    def modelIsChanged(self):
+    def model_is_changed(self):
         """
         Метод который будет вызван у наблюдателя при изменении модели.
         """

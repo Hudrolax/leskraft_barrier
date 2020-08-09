@@ -5,6 +5,7 @@ from time import sleep
 import threading
 import copy
 from utility.logger_super import LoggerSuper
+from datetime import datetime
 
 
 class HttpGetter(LoggerSuper):
@@ -23,8 +24,16 @@ class HttpGetter(LoggerSuper):
         self._username = user
         self._password = password
         self._permission = False
+        self._last_connected_time = datetime.now()
         self._get_open_codes_thread = threading.Thread(target=self._get_open_codes_thread_func, args=(), daemon=True)
         self._get_open_codes_thread.start()
+
+    @property
+    def connected(self):
+        if (datetime.now() - self._last_connected_time).total_seconds() < 10:
+            return True
+        else:
+            return False
 
     @property
     def permission(self):
@@ -33,6 +42,7 @@ class HttpGetter(LoggerSuper):
     def _get_open_codes_thread_func(self):
         while True:
             self._get_open_codes()
+            self.notify_observers()
             sleep(5)
 
     def _get_open_codes(self):
@@ -48,6 +58,8 @@ class HttpGetter(LoggerSuper):
                 self._db.commit()
             except:
                 self.logger.error('Не смог распарсить JSON')
+
+            self._last_connected_time = datetime.now()
         except:
             self.logger.error(f'get_open_codes connection error to http://{self._server}:{self._port}{self._open_codes_route}')
 

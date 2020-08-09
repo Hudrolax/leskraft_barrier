@@ -52,7 +52,7 @@ class ArduinoBarrier(Observer, LoggerSuper):
             self.logger.error('Что-то c макетом шлагбаума. Не смог отправить команду ЗАКРЫТЬ')
             self._inicialize_arduino()
 
-    def modelIsChanged(self):
+    def model_is_changed(self):
         self.open()
         sleep(5)
         self.close()
