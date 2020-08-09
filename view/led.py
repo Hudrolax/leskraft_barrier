@@ -50,10 +50,8 @@ class LED:
                 self._led_off()
             elif self._mode == 3:
                 self._led_on()
-                logging.warning('blink_on')
                 sleep(1)
-                logging.warning('blink_off')
-                self._led_off()
+                   self._led_off()
 
 
 class LedAssembly(Observer, LoggerSuper):
@@ -63,8 +61,8 @@ class LedAssembly(Observer, LoggerSuper):
     logger = logging.getLogger('LedAssembly')
     def __init__(self, model):
         self.model = model
-        self.red_led = LED(gpio=23, name='red')
-        self.green_led = LED(gpio=24, name='green')
+        self.red_led = LED(gpio=2, name='red')
+        self.green_led = LED(gpio=3, name='green')
 
     def model_is_changed(self):
         if self.model.permission:
