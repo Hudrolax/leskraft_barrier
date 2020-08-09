@@ -91,4 +91,4 @@ class HttpGetter(LoggerSuper):
 
     def notify_observers(self):
         for x in self._observers:
-            x.modelIsChanged()
+            x.model_is_changed()
