@@ -46,6 +46,7 @@ class LED:
                 GPIO.output(self._gpio, True)
                 sleep(0.25)
                 GPIO.output(self._gpio, False)
+            sleep(0.01)
 
 
 class LedAssembly(Observer, LoggerSuper):
@@ -57,12 +58,6 @@ class LedAssembly(Observer, LoggerSuper):
         self.model = model
         self.red_led = LED(gpio=23, name='red')
         self.green_led = LED(gpio=24, name='green')
-        self._thread = threading.Thread(target=self._led_assembly_threaded_func, args=(), daemon=True)
-        self._thread.start()
-
-    def _led_assembly_threaded_func(self):
-        while True:
-            pass
 
     def model_is_changed(self):
         if self.model.permission:
@@ -70,7 +65,7 @@ class LedAssembly(Observer, LoggerSuper):
         else:
             self.green_led.led_off()
 
-        if self.model.connected():
+        if self.model.connected:
             self.red_led.led_on()
         else:
             self.red_led.blink()
