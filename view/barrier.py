@@ -29,6 +29,7 @@ class Barrier(Observer, LoggerSuper):
                 self.open()
                 sleep(5)
                 self.close()
+                self.model.reset_permission()
                 self._open = False
             sleep(0.1)
 
