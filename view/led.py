@@ -51,7 +51,7 @@ class LED:
             elif self._mode == 3:
                 self._led_on()
                 print('blink_on')
-                sleep(0.5)
+                sleep(1)
                 print('blink_off')
                 self._led_off()
 
