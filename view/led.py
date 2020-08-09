@@ -1,4 +1,5 @@
 from RPi import GPIO
+from utility.pizypwm import *
 from utility.logger_super import LoggerSuper
 from utility.observer import Observer
 import threading
@@ -20,7 +21,6 @@ class LED:
         self._thread = threading.Thread(target=self._led_threaded_func, args=(), daemon=True)
         self._thread.start()
 
-
     def led_on(self):
         self._mode = 1
 
@@ -32,6 +32,9 @@ class LED:
 
     def blink_fast(self):
         self._mode = 3
+
+    def pwm_mode(self):
+        self._mode = 4
 
     def _led_on(self):
         GPIO.output(self._gpio, True)
@@ -55,6 +58,24 @@ class LED:
                 sleep(0.25)
                 self._led_off()
                 sleep(0.25)
+            elif self._mode == 4:
+                led_pwm = PiZyPwm(100, self._gpio, GPIO.BCM)
+                led_pwm.start(100)
+                power = 0
+                dim_up = range(0, 80)
+                dim_up.reverse()
+                dim_down = range(0, 80)
+                while self._mode == 4:
+                    for power in dim_up:
+                        led_pwm.changeDutyCycle(power)
+                        sleep(0.01)
+                        if self._mode != 4:
+                            break
+                    for power in dim_down:
+                        led_pwm.changeDutyCycle(power)
+                        sleep(0.01)
+                        if self._mode != 4:
+                            break
 
 
 class LedAssembly(Observer, LoggerSuper):
@@ -74,6 +95,6 @@ class LedAssembly(Observer, LoggerSuper):
             self.green_led.led_off()
 
         if self.model.connected:
-            self.red_led.led_on()
+            self.red_led.pwm_mode()
         else:
             self.red_led.blink()
