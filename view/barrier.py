@@ -12,6 +12,7 @@ class Barrier(Observer, LoggerSuper):
 
     def __init__(self, model):
         self.model = model
+        self._openned = False
 
     def open(self):
         self.logger.info('открыл шлагбаум')
@@ -20,7 +21,9 @@ class Barrier(Observer, LoggerSuper):
         self.logger.info('закрыл шлагбаум')
 
     def model_is_changed(self):
-        if self.model.permission:
+        if not self._openned and self.model.permission:
+            self._openned = True
             self.open()
             sleep(5)
             self.close()
+            self._openned = False

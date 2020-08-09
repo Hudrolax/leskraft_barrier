@@ -48,6 +48,7 @@ if __name__ == '__main__':
     barrier = Barrier(http_getter)
     http_getter.add_observer(barrier)
     led_assembly = LedAssembly(http_getter)
+    http_getter.add_observer(led_assembly)
 
     keyboard_input = Keyboard(data_base)
     while True:
