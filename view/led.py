@@ -74,14 +74,3 @@ class LedAssembly(Observer, LoggerSuper):
             self.red_led.led_on()
         else:
             self.red_led.blink()
-
-if __name__ == '__main__':
-    led = LedAssembly(None)
-    led.green_led.led_on()
-    sleep(0.5)
-    led.green_led.led_off()
-    sleep(0.5)
-    led.green_led.led_on()
-    sleep(0.5)
-    led.green_led.led_off()
-    led.green_led.blink_fast()
