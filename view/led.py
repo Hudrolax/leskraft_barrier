@@ -61,10 +61,8 @@ class LED:
             elif self._mode == 4:
                 led_pwm = PiZyPwm(100, self._gpio, GPIO.BCM)
                 led_pwm.start(100)
-                power = 0
                 dim_up = range(0, 80)
-                dim_up.reverse()
-                dim_down = range(0, 80)
+                dim_down = range(80, 0)
                 while self._mode == 4:
                     for power in dim_up:
                         led_pwm.changeDutyCycle(power)
