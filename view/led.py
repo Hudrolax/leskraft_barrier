@@ -49,10 +49,12 @@ class LED:
                 self._led_on()
                 sleep(1)
                 self._led_off()
+                sleep(1)
             elif self._mode == 3:
                 self._led_on()
                 sleep(0.25)
                 self._led_off()
+                sleep(0.25)
 
 
 class LedAssembly(Observer, LoggerSuper):
