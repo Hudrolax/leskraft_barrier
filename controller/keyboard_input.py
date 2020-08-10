@@ -44,6 +44,6 @@ class Keyboard(LoggerSuper, BaseClass):
                         print(f'Set WARNING log level for {cl}')
                 elif 'exit' in cmd_list:
                     self.logger.info('Bye')
-                    self.exit()
+                    BaseClass.exit()
             except:
                 continue
