@@ -5,6 +5,7 @@ from model.data_base import DB
 from view.barrier import Barrier
 from view.led import LedAssembly
 from utility.class_watchdog import WatchDog
+from utility.base_class import BaseClass
 from time import sleep
 import os
 from dotenv import load_dotenv
@@ -51,5 +52,5 @@ if __name__ == '__main__':
     http_getter.add_observer(led_assembly)
 
     keyboard_input = Keyboard(data_base)
-    while True:
+    while BaseClass.working():
         sleep(1)
