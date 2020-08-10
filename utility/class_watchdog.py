@@ -2,10 +2,11 @@ import serial
 import threading
 from time import sleep
 from utility.logger_super import LoggerSuper
+from utility.base_class import BaseClass
 import logging
 
 
-class WatchDog(LoggerSuper):
+class WatchDog(LoggerSuper, BaseClass):
     logger = logging.getLogger('CWatchDog')
 
     def __init__(self, port):
@@ -28,6 +29,6 @@ class WatchDog(LoggerSuper):
             cls.logger.warning(f'Write error to port {_s_port}')
 
     def _ping(self):
-        while True:
+        while self.working():
             self._send_to_serial(self._serial, '~U')  # Отправка команды "я в норме" на вотчдог
             sleep(3)

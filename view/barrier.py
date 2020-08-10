@@ -1,11 +1,12 @@
 from utility.observer import Observer
 from utility.logger_super import LoggerSuper
+from utility.base_class import BaseClass
 from time import sleep
 import logging
 import threading
 
 
-class Barrier(Observer, LoggerSuper):
+class Barrier(Observer, LoggerSuper, BaseClass):
     """
     Класс описывает управление шлагбаумом
     """
@@ -24,7 +25,7 @@ class Barrier(Observer, LoggerSuper):
         self.logger.info('закрыл шлагбаум')
 
     def _threaded_func(self):
-        while True:
+        while self.working():
             if self._open:
                 self.open()
                 sleep(5)

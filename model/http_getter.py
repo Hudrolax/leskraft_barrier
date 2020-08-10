@@ -5,10 +5,11 @@ from time import sleep
 import threading
 import copy
 from utility.logger_super import LoggerSuper
+from utility.base_class import BaseClass
 from datetime import datetime
 
 
-class HttpGetter(LoggerSuper):
+class HttpGetter(LoggerSuper, BaseClass):
     """
     Класс описывает объект, который запрашивает список ШК из центральной базы и выдает разрешение на открытие шлагбаума
     """
@@ -40,7 +41,7 @@ class HttpGetter(LoggerSuper):
         return self._permission
 
     def _get_open_codes_thread_func(self):
-        while True:
+        while self.working():
             self._get_open_codes()
             self.notify_observers()
             sleep(5)

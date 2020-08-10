@@ -1,14 +1,14 @@
 from RPi import GPIO
-from utility.logger_super import LoggerSuper
 from utility.observer import Observer
+from utility.base_class import BaseClass
 import threading
 import logging
 from time import sleep
 
 
-class LED:
+class LED(BaseClass):
     """
-    Класс LED отвечает за объект светодиода. Обеспечивает методы включения и отключения светодиода.
+    Класс LED отвечает за объект светодиода. Обеспечивает методы его сигналов.
     """
     def __init__(self, gpio, name:str = None):
         self._name = name
@@ -17,7 +17,7 @@ class LED:
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)  # говорим о том, что мы будем обращаться к контактам по номеру канала
         GPIO.setup(self._gpio, GPIO.OUT)  # Настраиваем GPIO пин на вывод
-        self._thread = threading.Thread(target=self._led_threaded_func, args=(), daemon=True)
+        self._thread = threading.Thread(target=self._led_threaded_func, args=(), daemon=False)
         self._thread.start()
 
     def led_on(self):
@@ -39,7 +39,7 @@ class LED:
         GPIO.output(self._gpio, False)
 
     def _led_threaded_func(self):
-        while True:
+        while self.working():
             if self._mode == 0:
                 self._led_off()
             elif self._mode == 1:
@@ -54,13 +54,15 @@ class LED:
                 sleep(0.25)
                 self._led_off()
                 sleep(0.25)
+        self._led_off()
+        GPIO.cleanup(self._gpio)
 
 
-class LedAssembly(Observer, LoggerSuper):
+
+class LedAssembly(Observer):
     """
     Сборка светодоиодов с логикой работы
     """
-    logger = logging.getLogger('LedAssembly')
     def __init__(self, model):
         self.model = model
         self.red_led = LED(gpio=2, name='red')

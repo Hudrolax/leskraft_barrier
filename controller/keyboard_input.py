@@ -1,11 +1,12 @@
 import threading
 import logging
 from utility.logger_super import LoggerSuper
+from utility.base_class import BaseClass
 from model.http_getter import HttpGetter
 from controller.barcode_scanner import BarScanner
 
 
-class Keyboard(LoggerSuper):
+class Keyboard(LoggerSuper, BaseClass):
     """
     Класс реализует поток чтение и обработку команд из консоли
     """
@@ -41,5 +42,7 @@ class Keyboard(LoggerSuper):
                     for cl in self.logger_level_classes:
                         cl.set_warning()
                         print(f'Set WARNING log level for {cl}')
+                elif 'exit' in cmd_list:
+                    self.exit()
             except:
                 continue
