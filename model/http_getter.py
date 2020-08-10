@@ -41,7 +41,7 @@ class HttpGetter(LoggerSuper, BaseClass):
         return self._permission
 
     def _get_open_codes_thread_func(self):
-        while BaseClass.working():
+        while self.working():
             self._get_open_codes()
             self.notify_observers()
             sleep(5)

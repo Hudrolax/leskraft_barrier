@@ -25,7 +25,7 @@ class Barrier(Observer, LoggerSuper, BaseClass):
         self.logger.info('закрыл шлагбаум')
 
     def _threaded_func(self):
-        while BaseClass.working():
+        while self.working():
             if self._open:
                 self.open()
                 sleep(5)

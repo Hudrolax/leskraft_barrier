@@ -39,7 +39,7 @@ class LED(BaseClass):
         GPIO.output(self._gpio, False)
 
     def _led_threaded_func(self):
-        while BaseClass.working():
+        while self.working():
             if self._mode == 0:
                 self._led_off()
             elif self._mode == 1:
@@ -55,8 +55,6 @@ class LED(BaseClass):
                 self._led_off()
                 sleep(0.25)
         self._led_off()
-        GPIO.cleanup(self._gpio)
-
 
 
 class LedAssembly(Observer):
