@@ -22,7 +22,7 @@ class Keyboard(LoggerSuper, BaseClass):
 
     # Function of input in thread
     def read_kbd_input(self):
-        while self.working():
+        while BaseClass.working():
             # Receive keyboard input from user.
             try:
                 input_str = input()
@@ -44,6 +44,6 @@ class Keyboard(LoggerSuper, BaseClass):
                         print(f'Set WARNING log level for {cl}')
                 elif 'exit' in cmd_list:
                     self.logger.info('Bye')
-                    self.exit()
+                    BaseClass.exit()
             except:
                 continue
