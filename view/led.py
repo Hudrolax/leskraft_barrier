@@ -6,7 +6,7 @@ import logging
 from time import sleep
 
 
-class LED(BaseClass):
+class LED:
     """
     Класс LED отвечает за объект светодиода. Обеспечивает методы его сигналов.
     """

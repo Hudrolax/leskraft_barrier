@@ -6,7 +6,7 @@ import logging
 import threading
 
 
-class Barrier(Observer, LoggerSuper, BaseClass):
+class Barrier(Observer, LoggerSuper):
     """
     Класс описывает управление шлагбаумом
     """

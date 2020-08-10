@@ -9,7 +9,7 @@ from utility.base_class import BaseClass
 from datetime import datetime
 
 
-class HttpGetter(LoggerSuper, BaseClass):
+class HttpGetter(LoggerSuper):
     """
     Класс описывает объект, который запрашивает список ШК из центральной базы и выдает разрешение на открытие шлагбаума
     """

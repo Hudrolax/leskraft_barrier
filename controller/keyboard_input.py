@@ -6,7 +6,7 @@ from model.http_getter import HttpGetter
 from controller.barcode_scanner import BarScanner
 
 
-class Keyboard(LoggerSuper, BaseClass):
+class Keyboard(LoggerSuper):
     """
     Класс реализует поток чтение и обработку команд из консоли
     """
