@@ -22,6 +22,8 @@ class Barrier(Observer, LoggerSuper):
         GPIO.setmode(GPIO.BCM)  # говорим о том, что мы будем обращаться к контактам по номеру канала
         GPIO.setup(self._open_pin, GPIO.OUT)  # Настраиваем GPIO пин на вывод
         GPIO.setup(self._close_pin, GPIO.OUT)  # Настраиваем GPIO пин на вывод
+        GPIO.output(self._open_pin, True)
+        GPIO.output(self._close_pin, True)
         self._barrier_thread = threading.Thread(target=self._threaded_func, args=(), daemon=True)
         self._barrier_thread.start()
 
