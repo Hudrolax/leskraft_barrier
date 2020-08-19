@@ -1,3 +1,4 @@
+from RPi import GPIO
 from utility.observer import Observer
 from utility.logger_super import LoggerSuper
 from utility.base_class import BaseClass
@@ -13,15 +14,27 @@ class Barrier(Observer, LoggerSuper):
     logger = logging.getLogger('Barrier')
 
     def __init__(self, model):
+        self._open_pin = 14
+        self._close_pin = 15
         self.model = model
         self._open = False
-        self._watchdog_thread = threading.Thread(target=self._threaded_func, args=(), daemon=True)
-        self._watchdog_thread.start()
+        GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BCM)  # говорим о том, что мы будем обращаться к контактам по номеру канала
+        GPIO.setup(self._open_pin, GPIO.OUT)  # Настраиваем GPIO пин на вывод
+        GPIO.setup(self._close_pin, GPIO.OUT)  # Настраиваем GPIO пин на вывод
+        self._barrier_thread = threading.Thread(target=self._threaded_func, args=(), daemon=True)
+        self._barrier_thread.start()
 
     def open(self):
+        GPIO.output(self._open_pin, True)
+        sleep(1)
+        GPIO.output(self._open_pin, False)
         self.logger.info('открыл шлагбаум')
 
     def close(self):
+        GPIO.output(self._close_pin, True)
+        sleep(1)
+        GPIO.output(self._close_pin, False)
         self.logger.info('закрыл шлагбаум')
 
     def _threaded_func(self):
