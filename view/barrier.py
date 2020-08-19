@@ -26,15 +26,15 @@ class Barrier(Observer, LoggerSuper):
         self._barrier_thread.start()
 
     def open(self):
-        GPIO.output(self._open_pin, True)
-        sleep(1)
         GPIO.output(self._open_pin, False)
+        sleep(1)
+        GPIO.output(self._open_pin, True)
         self.logger.info('открыл шлагбаум')
 
     def close(self):
-        GPIO.output(self._close_pin, True)
-        sleep(1)
         GPIO.output(self._close_pin, False)
+        sleep(1)
+        GPIO.output(self._close_pin, True)
         self.logger.info('закрыл шлагбаум')
 
     def _threaded_func(self):
