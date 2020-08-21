@@ -30,6 +30,9 @@ class Magnet_loop(LoggerSuper):
             else:
                 self._loop_state = False
             sleep(0.1)
+            self._loop_state = True
+            sleep(10)
+            self._loop_state = False
 
     def _threaded_output_loop(self):
         while BaseClass.working():
@@ -38,3 +41,4 @@ class Magnet_loop(LoggerSuper):
             else:
                 sleep(3)
                 GPIO.output(self._ouput_pin, True)
+            sleep(0.1)
