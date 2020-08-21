@@ -37,3 +37,4 @@ class Magnet_loop(LoggerSuper):
             else:
                 sleep(3)
                 GPIO.output(self._ouput_pin, True)
+            sleep(0.1)
