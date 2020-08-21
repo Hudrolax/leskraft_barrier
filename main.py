@@ -37,6 +37,7 @@ if __name__ == '__main__':
     opengate_user = os.getenv("OPENGATE_USER")
     opengate_password = os.getenv("OPENGATE_PASS")
 
+    GPIO.setmode(GPIO.BCM)
     logger.info("Let's go")
     logger.info('start watchdog')
     watchdog = WatchDog(watchdog_com_port)

@@ -14,7 +14,6 @@ class Magnet_loop(LoggerSuper):
         self._ouput_pin = 25
         self._loop_state = False
         GPIO.setwarnings(False)
-        GPIO.setmode(GPIO.BCM)
         GPIO.setup(self._ouput_pin, GPIO.IN)
         GPIO.setup(self._ouput_pin, GPIO.OUT)
         GPIO.output(self._ouput_pin, True)
@@ -30,15 +29,15 @@ class Magnet_loop(LoggerSuper):
             else:
                 self._loop_state = False
             sleep(0.1)
-            self._loop_state = True
-            sleep(10)
-            self._loop_state = False
 
     def _threaded_output_loop(self):
         while BaseClass.working():
-            if self._loop_state:
-                GPIO.output(self._ouput_pin, False)
-            else:
-                sleep(3)
-                GPIO.output(self._ouput_pin, True)
+            # if self._loop_state:
+            #     GPIO.output(self._ouput_pin, False)
+            # else:
+            #     sleep(3)
+            #     GPIO.output(self._ouput_pin, True)
             sleep(0.1)
+            GPIO.output(self._ouput_pin, False)
+            sleep(1)
+            GPIO.output(self._ouput_pin, True)

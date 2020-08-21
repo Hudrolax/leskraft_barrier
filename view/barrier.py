@@ -19,7 +19,6 @@ class Barrier(Observer, LoggerSuper):
         self.model = model
         self._open = False
         GPIO.setwarnings(False)
-        GPIO.setmode(GPIO.BCM)  # говорим о том, что мы будем обращаться к контактам по номеру канала
         GPIO.setup(self._open_pin, GPIO.OUT)  # Настраиваем GPIO пин на вывод
         GPIO.setup(self._close_pin, GPIO.OUT)  # Настраиваем GPIO пин на вывод
         GPIO.output(self._open_pin, True)

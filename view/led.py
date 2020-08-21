@@ -15,7 +15,6 @@ class LED:
         self._mode = 0 # 0 - OFF, 1 - ON, 2 - blink, 3 - blink fast
         self._gpio = gpio
         GPIO.setwarnings(False)
-        GPIO.setmode(GPIO.BCM)  # говорим о том, что мы будем обращаться к контактам по номеру канала
         GPIO.setup(self._gpio, GPIO.OUT)  # Настраиваем GPIO пин на вывод
         self._thread = threading.Thread(target=self._led_threaded_func, args=(), daemon=False)
         self._thread.start()
