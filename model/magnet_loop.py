@@ -30,8 +30,7 @@ class Magnet_loop(LoggerSuper):
                 self._loop_state = True
                 self._last_loop_output_signal = datetime.now()
             else:
-                if (datetime.now() - self._last_loop_output_signal).total_seconds() > 3:
-                    self._loop_state = False
+                self._loop_state = False
             sleep(0.1)
 
     def _threaded_output_loop(self):
@@ -39,6 +38,6 @@ class Magnet_loop(LoggerSuper):
             if self._loop_state:
                 GPIO.output(self._ouput_pin, False)
             else:
-                sleep(3)
-                GPIO.output(self._ouput_pin, True)
+                if (datetime.now() - self._last_loop_output_signal).total_seconds() > 3:
+                    GPIO.output(self._ouput_pin, True)
             sleep(0.1)
