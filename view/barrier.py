@@ -14,8 +14,8 @@ class Barrier(Observer, LoggerSuper):
     logger = logging.getLogger('Barrier')
 
     def __init__(self, model):
-        self._open_pin = 14
-        self._close_pin = 15
+        self._open_pin = 23
+        self._close_pin = 23
         self.model = model
         self._open = False
         GPIO.setwarnings(False)
