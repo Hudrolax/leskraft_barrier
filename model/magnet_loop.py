@@ -14,7 +14,7 @@ class Magnet_loop(LoggerSuper):
         self._ouput_pin = 25
         self._loop_state = False
         GPIO.setwarnings(False)
-        GPIO.setup(self._ouput_pin, GPIO.IN)
+        GPIO.setup(self._input_pin, GPIO.IN)
         GPIO.setup(self._ouput_pin, GPIO.OUT)
         GPIO.output(self._ouput_pin, True)
         self._input_thread = threading.Thread(target=self._threaded_read_input_pin, args=(), daemon=True)
