@@ -2,6 +2,7 @@ from controller.barcode_scanner import BarScanner
 from controller.keyboard_input import Keyboard
 from model.http_getter import HttpGetter
 from model.data_base import DB
+from model.magnet_loop import Magnet_loop
 from view.barrier import Barrier
 from view.led import LedAssembly
 from utility.class_watchdog import WatchDog
@@ -50,6 +51,7 @@ if __name__ == '__main__':
     http_getter.add_observer(barrier)
     led_assembly = LedAssembly(http_getter)
     http_getter.add_observer(led_assembly)
+    magnet_loop = Magnet_loop()
 
     keyboard_input = Keyboard(data_base)
     while BaseClass.working():
