@@ -11,6 +11,7 @@ from time import sleep
 import os
 from dotenv import load_dotenv
 import logging
+from RPi import GPIO
 
 
 if __name__ == '__main__':
