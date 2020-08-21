@@ -4,6 +4,7 @@ from RPi import GPIO
 from time import sleep
 import logging
 import threading
+from datetime import datetime
 
 
 class Magnet_loop(LoggerSuper):
@@ -13,6 +14,7 @@ class Magnet_loop(LoggerSuper):
         self._input_pin = 17
         self._ouput_pin = 25
         self._loop_state = False
+        self._last_loop_output_signal = datetime.now()
         GPIO.setwarnings(False)
         GPIO.setup(self._input_pin, GPIO.IN)
         GPIO.setup(self._ouput_pin, GPIO.OUT)
@@ -26,8 +28,10 @@ class Magnet_loop(LoggerSuper):
         while BaseClass.working():
             if GPIO.input(self._input_pin) == GPIO.HIGH:
                 self._loop_state = True
+                self._last_loop_output_signal = datetime.now()
             else:
-                self._loop_state = False
+                if (datetime.now() - self._last_loop_output_signal).total_seconds() > 3:
+                    self._loop_state = False
             sleep(0.1)
 
     def _threaded_output_loop(self):
