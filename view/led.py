@@ -80,7 +80,7 @@ class LedAssembly(Observer):
                     self.red_led.led_off()
                     self.green_led.blink_fast()
                 else:
-                      self.green_led.led_off()
+                    self.green_led.led_off()
                     self.red_led.blink_fast()
             else:
                 self.red_led.blink()
