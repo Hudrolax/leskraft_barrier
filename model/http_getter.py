@@ -84,6 +84,7 @@ class HttpGetter(LoggerSuper):
             self.bool_get_permission = False
             self._send_opening_event(code)
         else:
+            self.notify_observers()
             self.logger.info(f'Отказано в разрешении на открытие по коду {code}')
 
     def reset_permission(self):

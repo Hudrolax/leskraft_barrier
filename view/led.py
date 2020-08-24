@@ -76,14 +76,11 @@ class LedAssembly(Observer):
     def model_is_changed(self):
         if self.model.connected:
             if self.model.bool_get_permission:
-                print('get permission')
                 if self.model.permission:
-                    print('true')
                     self.red_led.led_off()
                     self.green_led.blink_fast()
                 else:
-                    print('false')
-                    self.green_led.led_off()
+                      self.green_led.led_off()
                     self.red_led.blink_fast()
             else:
                 self.red_led.blink()
