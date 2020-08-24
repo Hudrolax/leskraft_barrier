@@ -76,18 +76,12 @@ class HttpGetter(LoggerSuper):
                 f'send_opening_event connection error to http://{self._server}:{self._port}{self._send_open_event_route}')
 
     def get_permission_by_code(self, code):
-        def _led_assembly_signal():
-            self.bool_get_permission = True
-            self.notify_observers()
-            self.bool_get_permission = False
-
+        self.bool_get_permission = True
         if code in self._db.open_codes:
             self._permission = True
             self.logger.info(f'Получено разрешение на открытие по коду {code} в _db.open_codes')
-            _led_assembly_signal()
             self._send_opening_event(code)
         else:
-            _led_assembly_signal()
             self.logger.info(f'Отказано в разрешении на открытие по коду {code}')
 
     def reset_permission(self):
