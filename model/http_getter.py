@@ -28,6 +28,7 @@ class HttpGetter(LoggerSuper):
         self._last_connected_time = datetime.now()
         self._get_open_codes_thread = threading.Thread(target=self._get_open_codes_thread_func, args=(), daemon=True)
         self._get_open_codes_thread.start()
+        self.bool_get_permission = False
 
     @property
     def connected(self):
@@ -78,6 +79,7 @@ class HttpGetter(LoggerSuper):
         if code in self._db.open_codes:
             self._permission = True
             self.logger.info(f'Получено разрешение на открытие по коду {code} в _db.open_codes')
+            self.bool_get_permission = True
             self.notify_observers()
             self._send_opening_event(code)
         else:

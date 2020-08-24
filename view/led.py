@@ -66,13 +66,18 @@ class LedAssembly(Observer):
         self.green_led = LED(gpio=3, name='green')
 
     def model_is_changed(self):
-        if self.model.permission:
-            self.red_led.led_off()
-            self.green_led.blink_fast()
-        else:
-            self.green_led.led_off()
-
-            if self.model.connected:
-                self.red_led.blink()
+        if self.model.connected:
+            if self.model.bool_get_permission:
+                if self.model.permission:
+                    self.red_led.led_off()
+                    self.green_led.blink_fast()
+                else:
+                    self.green_led.led_off()
+                    self.red_led.blink_fast()
+                sleep(3)
+                self.model.bool_get_permission = False
             else:
-                self.red_led.led_off()
+                self.red_led.blink()
+        else:
+            self.green_led.blink()
+            self.red_led.blink()
