@@ -37,6 +37,12 @@ class LED:
     def _led_off(self):
         GPIO.output(self._gpio, False)
 
+    def _sleep(self, ms, mode):
+        for k in range(0, ms):
+            sleep(0.001)
+            if self._mode != mode:
+                return
+
     def _led_threaded_func(self):
         while BaseClass.working():
             if self._mode == 0:
@@ -45,14 +51,16 @@ class LED:
                 self._led_on()
             elif self._mode == 2:
                 self._led_on()
-                sleep(1)
+                self._sleep(1000, 2)
                 self._led_off()
-                sleep(1)
+                self._sleep(1000, 2)
             elif self._mode == 3:
-                self._led_on()
-                sleep(0.25)
-                self._led_off()
-                sleep(0.25)
+                for k in range(0, 12):
+                    self._led_on()
+                    self._sleep(250, 3)
+                    self._led_off()
+                    self._sleep(250, 3)
+            sleep(0.1)
         self._led_off()
 
 
@@ -74,8 +82,6 @@ class LedAssembly(Observer):
                 else:
                     self.green_led.led_off()
                     self.red_led.blink_fast()
-                sleep(3)
-                self.model.bool_get_permission = False
             else:
                 self.red_led.blink()
         else:
