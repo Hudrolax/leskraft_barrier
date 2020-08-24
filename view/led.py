@@ -55,11 +55,11 @@ class LED:
                 self._led_off()
                 self._sleep(1000, 2)
             elif self._mode == 3:
-                for k in range(0, 12):
+                for k in range(0, 24):
                     self._led_on()
-                    self._sleep(250, 3)
+                    self._sleep(125, 3)
                     self._led_off()
-                    self._sleep(250, 3)
+                    self._sleep(125, 3)
             sleep(0.1)
         self._led_off()
 
@@ -84,6 +84,7 @@ class LedAssembly(Observer):
                     self.red_led.blink_fast()
             else:
                 self.red_led.blink()
+                self.green_led.led_off()
         else:
             self.green_led.blink()
             self.red_led.blink()
