@@ -22,28 +22,38 @@ class Keyboard(LoggerSuper):
 
     # Function of input in thread
     def read_kbd_input(self):
+        def set_level(level, level_class):
+            if isinstance(level_class, str):
+                for cls in self.logger_level_classes:
+                    if str(type(cls)).find('level_class'):
+                        level_class = cls
+                        break
+
+            if level == 'debug':
+                level_class.set_debug()
+            elif level == 'info':
+                level_class.set_info()
+            elif level == 'warning':
+                level_class.set_warning()
+            print(f'Set {level} log level for {level_class}')
+
         while BaseClass.working():
             # Receive keyboard input from user.
             try:
                 input_str = input()
                 print('Enter command: ' + input_str)
                 cmd_list = input_str.split(' ')
-                if 'codes' in cmd_list:
-                    print(self._db.print_open_codes())
-                elif 'debug' in cmd_list:
-                    for cl in self.logger_level_classes:
-                        cl.set_debug()
-                        print(f'Set DEBUG log level for {cl}')
-                elif 'info' in cmd_list:
-                    for cl in self.logger_level_classes:
-                        cl.set_info()
-                        print(f'Set INFO log level for {cl}')
-                elif 'warning' in cmd_list:
-                    for cl in self.logger_level_classes:
-                        cl.set_warning()
-                        print(f'Set WARNING log level for {cl}')
-                elif 'exit' in cmd_list:
-                    self.logger.info('Bye')
-                    BaseClass.exit()
+                if len(cmd_list) > 0:
+                    if 'codes' in cmd_list:
+                        print(self._db.print_open_codes())
+                    elif 'debug' == cmd_list[0] or 'info' == cmd_list[0] or 'warning' == cmd_list[0]:
+                        if len(cmd_list) == 2:
+                            set_level(cmd_list[0], cmd_list[1])
+                        else:
+                            for cl in self.logger_level_classes:
+                                set_level(cmd_list[0], cl)
+                    elif 'exit' in cmd_list:
+                        self.logger.info('Bye')
+                        BaseClass.exit()
             except:
                 continue
