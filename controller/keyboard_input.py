@@ -25,8 +25,9 @@ class Keyboard(LoggerSuper):
             _finded = False
             for cls in self.logger_level_classes:
                 print(type(cls))
-                if str(type(cls)).find(level_class):
+                if str(type(cls)).find(level_class) > -1:
                     level_class = cls
+                    _finded = True
                     break
             if not _finded:
                 print(f'class {level_class} not founded.')
