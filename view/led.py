@@ -49,8 +49,10 @@ class LedAssembly:
                 self._mode = 1
             if self.model.bool_get_permission:
                 if self.model.permission:
+                    print('condition: allow')
                     self._mode = 2
                 else:
+                    print('condition: deny')
                     self._mode = 3
             sleep(0.1)
 
@@ -75,7 +77,9 @@ class LedAssembly:
                 self.green_led.led_off()
                 self.red_led.led_off()
                 sleep(0.1)
+                print('mode0')
             elif self._mode == 1:
+                print('mode1')
                 self.green_led.led_off()
                 self.red_led.led_on()
                 _sleep(1000, self._mode, 1)
@@ -83,6 +87,7 @@ class LedAssembly:
                 _sleep(1000, self._mode, 1)
             elif self._mode == 2:
                 self.red_led.led_off()
+                print('mode2')
                 for k in range (0, 30):
                     self.green_led.led_on()
                     sleep(125)
@@ -90,6 +95,7 @@ class LedAssembly:
                     sleep(125)
                 self.model.bool_get_permission = False
             elif self._mode == 3:
+                print('mode3')
                 self.green_led.led_off()
                 for k in range(0, 15):
                     self.red_led.led_on()
