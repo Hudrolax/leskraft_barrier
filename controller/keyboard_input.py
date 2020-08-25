@@ -23,11 +23,16 @@ class Keyboard(LoggerSuper):
     # Function of input in thread
     def read_kbd_input(self):
         def set_level(level, level_class):
+            print('sl')
             if isinstance(level_class, str):
+                _finded = False
                 for cls in self.logger_level_classes:
-                    if str(type(cls)).find('level_class'):
+                    if str(type(cls)).find(level_class):
                         level_class = cls
                         break
+                if not _finded:
+                    print(f'class {level_class} not founded.')
+                    return 
 
             if level == 'debug':
                 level_class.set_debug()
