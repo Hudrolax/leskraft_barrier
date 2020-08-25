@@ -51,17 +51,17 @@ class Barrier(Observer, LoggerSuper):
             self.logger.error(f'set_close_by_timer type error!!!. Type val is {type(val)}. Need bool.')
 
     def open(self):
-        # GPIO.output(self._open_pin, False)
-        # sleep(1)
-        # GPIO.output(self._open_pin, True)
+        GPIO.output(self._open_pin, False)
+        sleep(1)
+        GPIO.output(self._open_pin, True)
         self._openned = True
         self._last_opening_time = datetime.now()
         self.logger.info('открыл шлагбаум')
 
     def close(self):
-        # GPIO.output(self._close_pin, False)
-        # sleep(1)
-        # GPIO.output(self._close_pin, True)
+        GPIO.output(self._close_pin, False)
+        sleep(1)
+        GPIO.output(self._close_pin, True)
         self._openned = False
         self.logger.info('закрыл шлагбаум')
 
