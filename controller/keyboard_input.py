@@ -26,7 +26,7 @@ class Keyboard(LoggerSuper):
             if isinstance(level_class, str):
                 _finded = False
                 for cls in self.logger_level_classes:
-                    print(type(cls)))
+                    print(type(cls))
                     if str(type(cls)).find(level_class):
                         level_class = cls
                         break
