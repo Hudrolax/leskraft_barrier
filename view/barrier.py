@@ -69,17 +69,17 @@ class Barrier(Observer, LoggerSuper):
             if self._to_open:
                 self.logger.debug('Открыл шлагбаум')
                 self.open()
-                sleep(8)
                 self.model.reset_permission()
+                sleep(8)
                 self._to_open = False
 
             # closing by magnet loop
-            if self._close_by_magnet_loop and self._openned and (datetime.now() - self._magnet_loop.get_last_loop_output_signal()) > self._CLOSE_BY_MAGNET_LOOP_DELAY:
+            if self._close_by_magnet_loop and self._openned and (datetime.now() - self._magnet_loop.get_last_loop_output_signal()).total_seconds() > self._CLOSE_BY_MAGNET_LOOP_DELAY:
                 self.close()
                 self.logger.debug(f'Закрыл шлагбаум по магнитной петле. Задержка после проезда {self._CLOSE_BY_MAGNET_LOOP_DELAY} сек.')
 
             # closing by timer
-            if self._close_by_timer and self._openned and (datetime.now() - self._last_opening_time) > self._CLOSE_BY_TIMER_DELAY:
+            if self._close_by_timer and self._openned and (datetime.now() - self._last_opening_time).total_seconds() > self._CLOSE_BY_TIMER_DELAY:
                 self.close()
                 self.logger.debug(f'Закрыл шлагбаум по таймеру. Задержка после открытия {self._CLOSE_BY_TIMER_DELAY} сек.')
 
