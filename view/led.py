@@ -72,6 +72,7 @@ class LedAssembly:
                     self._mode = 2
                 else:
                     self._mode = 3
+            print(self._mode)
 
             if self._mode == 0:
                 self.green_led.led_off()
