@@ -57,9 +57,9 @@ class Barrier(Observer, LoggerSuper):
         self.logger.info('открыл шлагбаум')
 
     def close(self):
-        # GPIO.output(self._close_pin, False)
-        # sleep(1)
-        # GPIO.output(self._close_pin, True)
+        GPIO.output(self._close_pin, False)
+        sleep(1)
+        GPIO.output(self._close_pin, True)
         self._openned = False
         self.logger.info('закрыл шлагбаум')
 
