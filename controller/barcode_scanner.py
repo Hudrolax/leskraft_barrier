@@ -4,6 +4,7 @@ import threading
 import logging
 from datetime import datetime
 from utility.logger_super import LoggerSuper
+from utility.base_class import BaseClass
 from time import sleep
 
 
@@ -42,7 +43,7 @@ class BarScanner(LoggerSuper):
     def _get_bar_code_threaded(self):
         sleep(1)
         _last_barcode = None
-        while True:
+        while BaseClass.working():
             if self._initialized:
                 if _last_barcode != '':
                     self.logger.info('Wait for scan barcode...')

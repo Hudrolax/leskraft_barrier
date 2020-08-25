@@ -91,18 +91,18 @@ class LedAssembly:
                 print('mode2')
                 for k in range (0, 30):
                     self.green_led.led_on()
-                    sleep(125)
+                    sleep(0.125)
                     self.green_led.led_off()
-                    sleep(125)
+                    sleep(0.125)
                 self.model.bool_get_permission = False
             elif self._mode == 3:
                 print('mode3')
                 self.green_led.led_off()
                 for k in range(0, 15):
                     self.red_led.led_on()
-                    sleep(125)
+                    sleep(0.125)
                     self.red_led.led_off()
-                    sleep(125)
+                    sleep(0.125)
                 self.model.bool_get_permission = False
         self.green_led.led_off()
         self.red_led.led_off()
