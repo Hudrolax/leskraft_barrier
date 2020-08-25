@@ -56,13 +56,13 @@ class LedAssembly:
                     self._mode = 3
             sleep(0.1)
 
-    def _led_threaded_func(self):
-        def _sleep(ms, selfmode, mode):
-            for k in range(0, ms):
-                sleep(0.001)
-                if selfmode != mode:
-                    return
+    def _sleep(self, ms, mode):
+        for k in range(0, ms):
+            sleep(0.001)
+            if self._mode != mode:
+                return
 
+    def _led_threaded_func(self):
         while BaseClass.working():
             self._mode = 0
             if self.model.connected:
@@ -82,9 +82,9 @@ class LedAssembly:
                 print('mode1')
                 self.green_led.led_off()
                 self.red_led.led_on()
-                _sleep(1000, self._mode, 1)
+                self._sleep(1000, 1)
                 self.red_led.led_off()
-                _sleep(1000, self._mode, 1)
+                self._sleep(1000, 1)
             elif self._mode == 2:
                 self.red_led.led_off()
                 print('mode2')
