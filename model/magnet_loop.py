@@ -11,6 +11,7 @@ class Magnet_loop(LoggerSuper):
     logger = logging.getLogger('Magnet_loop_view')
 
     def __init__(self):
+        self._LOOP_SIGNAL_DELAY = 2 # удлинение передачи сигнала с петли
         self._input_pin = 17
         self._ouput_pin = 25
         self._loop_state = False
@@ -23,6 +24,9 @@ class Magnet_loop(LoggerSuper):
         self._input_thread.start()
         self._output_thread = threading.Thread(target=self._threaded_output_loop, args=(), daemon=True)
         self._output_thread.start()
+
+    def get_last_loop_output_signal(self):
+        return self._last_loop_output_signal
 
     def _threaded_read_input_pin(self):
         while BaseClass.working():
@@ -38,6 +42,6 @@ class Magnet_loop(LoggerSuper):
             if self._loop_state:
                 GPIO.output(self._ouput_pin, False)
             else:
-                if (datetime.now() - self._last_loop_output_signal).total_seconds() > 3:
+                if (datetime.now() - self._last_loop_output_signal).total_seconds() > self._LOOP_SIGNAL_DELAY:
                     GPIO.output(self._ouput_pin, True)
             sleep(0.1)

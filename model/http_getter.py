@@ -29,6 +29,14 @@ class HttpGetter(LoggerSuper):
         self._get_open_codes_thread = threading.Thread(target=self._get_open_codes_thread_func, args=(), daemon=True)
         self._get_open_codes_thread.start()
         self.bool_get_permission = False
+        self._closing_by_magnet_loop = True
+        self._closing_by_timer = 0
+
+    def get_closing_by_timer(self):
+        return self._closing_by_timer
+
+    def get_closing_by_magnet_loop(self):
+        return self._closing_by_magnet_loop
 
     @property
     def connected(self):
@@ -56,6 +64,23 @@ class HttpGetter(LoggerSuper):
                 decoded_json = json.loads(_answer)
                 self.logger.debug(f'Get JSON: {decoded_json}')
                 _codelist = decoded_json.get('open_codes')
+                _permissions_of_closing = decoded_json.get('permissions_of_closing')
+                if _permissions_of_closing[0] == "true":
+                    self._closing_by_magnet_loop = True
+                    self.logger.debug(f'closing_by_magnet_loop = {self._closing_by_magnet_loop}')
+                elif _permissions_of_closing[0] == "false":
+                    self._closing_by_magnet_loop = False
+                    self.logger.debug(f'closing_by_magnet_loop = {self._closing_by_magnet_loop}')
+                if _permissions_of_closing[1] == "0":
+                    self._closing_by_timer = 0
+                    self.logger.debug(f'closing_by_magnet_loop = {self._closing_by_timer}')
+                else:
+                    try:
+                        self._closing_by_timer = int(_permissions_of_closing[1])
+                        self.logger.debug(f'closing_by_magnet_loop = {self._closing_by_timer}')
+                    except:
+                        self.logger.error(f'_get_open_codes type error. _permissions_of_closing[1] need integer, but {type(_permissions_of_closing[1])} got.')
+
                 self._db.open_codes = copy.deepcopy(_codelist)
                 self._db.commit()
             except:
