@@ -22,7 +22,7 @@ class Keyboard(LoggerSuper):
 
     # Function of input in thread
     def read_kbd_input(self):
-        def set_level(level, level_class):
+        def set_level(self, level, level_class):
             if isinstance(level_class, str):
                 _finded = False
                 for cls in self.logger_level_classes:
@@ -53,10 +53,10 @@ class Keyboard(LoggerSuper):
                         print(self._db.print_open_codes())
                     elif 'debug' == cmd_list[0] or 'info' == cmd_list[0] or 'warning' == cmd_list[0]:
                         if len(cmd_list) == 2:
-                            set_level(cmd_list[0], cmd_list[1])
+                            set_level(self, cmd_list[0], cmd_list[1])
                         else:
                             for cl in self.logger_level_classes:
-                                set_level(cmd_list[0], cl)
+                                set_level(self, cmd_list[0], cl)
                     elif 'exit' in cmd_list:
                         self.logger.info('Bye')
                         BaseClass.exit()
