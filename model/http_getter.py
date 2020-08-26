@@ -103,6 +103,7 @@ class HttpGetter(LoggerSuper):
                                     auth=(self._username, self._password))
             _answer = response.content.decode()
             self.logger.info(f'send_opening_event answer: {_answer}')
+            print(f'send_opening_event answer: {_answer}')
         except:
             self.logger.error(
                 f'send_opening_event connection error to http://{self._server}:{self._port}{self._send_open_event_route}')
