@@ -16,6 +16,7 @@ class Magnet_loop(LoggerSuper):
         self._ouput_pin = 25
         self._loop_state = False
         self._last_loop_output_signal = datetime.now()
+        self._wait_for_signal = True
         GPIO.setwarnings(False)
         GPIO.setup(self._input_pin, GPIO.IN)
         GPIO.setup(self._ouput_pin, GPIO.OUT)
@@ -25,6 +26,18 @@ class Magnet_loop(LoggerSuper):
         self._output_thread = threading.Thread(target=self._threaded_output_loop, args=(), daemon=True)
         self._output_thread.start()
 
+    @property
+    def wait_for_signal(self):
+        return self._wait_for_signal
+
+    @wait_for_signal.setter
+    def wait_for_signal(self, val):
+        if isinstance(val, bool):
+            self._wait_for_signal = val
+        else:
+            raise TypeError(f'Magnet_loop wait_for_signal setter type error. Need bool but type{val} got.')
+
+
     def get_last_loop_output_signal(self):
         return self._last_loop_output_signal
 
@@ -33,6 +46,7 @@ class Magnet_loop(LoggerSuper):
             if GPIO.input(self._input_pin) == GPIO.HIGH:
                 self._loop_state = True
                 self._last_loop_output_signal = datetime.now()
+                self._wait_for_signal = False
             else:
                 self._loop_state = False
             sleep(0.1)

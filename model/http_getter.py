@@ -31,9 +31,13 @@ class HttpGetter(LoggerSuper):
         self.bool_get_permission = False
         self._closing_by_magnet_loop = True
         self._closing_by_timer = 0
+        self._closing_by_timer_forcibly = 0
 
     def get_closing_by_timer(self):
         return self._closing_by_timer
+
+    def get_closing_by_timer_forcibly(self):
+        return self._closing_by_timer_forcibly
 
     def get_closing_by_magnet_loop(self):
         return self._closing_by_magnet_loop
@@ -71,15 +75,18 @@ class HttpGetter(LoggerSuper):
                 elif _permissions_of_closing[0] == "false":
                     self._closing_by_magnet_loop = False
                     self.logger.debug(f'closing_by_magnet_loop = {self._closing_by_magnet_loop}')
-                if _permissions_of_closing[1] == "0":
-                    self._closing_by_timer = 0
-                    self.logger.debug(f'closing_by_magnet_loop = {self._closing_by_timer}')
-                else:
-                    try:
-                        self._closing_by_timer = int(_permissions_of_closing[1])
-                        self.logger.debug(f'closing_by_magnet_loop = {self._closing_by_timer}')
-                    except:
-                        self.logger.error(f'_get_open_codes type error. _permissions_of_closing[1] need integer, but {type(_permissions_of_closing[1])} got.')
+
+                try:
+                    self._closing_by_timer = int(_permissions_of_closing[1])
+                    self.logger.debug(f'_closing_by_timer = {self._closing_by_timer}')
+                except:
+                    self.logger.error(f'_get_open_codes type error. _permissions_of_closing[1] need integer, but {type(_permissions_of_closing[1])} got.')
+
+                try:
+                    self._closing_by_timer_forcibly = int(_permissions_of_closing[2])
+                    self.logger.debug(f'closing_by_magnet_loop = {self._closing_by_timer_forcibly}')
+                except:
+                    self.logger.error(f'_get_open_codes type error. _permissions_of_closing[2] need integer, but {type(_permissions_of_closing[2])} got.')
 
                 self._db.open_codes = copy.deepcopy(_codelist)
                 self._db.commit()
