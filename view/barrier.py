@@ -37,6 +37,21 @@ class Barrier(Observer, LoggerSuper):
         self._barrier_thread = threading.Thread(target=self._threaded_func, args=(), daemon=True)
         self._barrier_thread.start()
 
+    def get_closing_by_magnet_loop(self):
+        if self._close_by_magnet_loop:
+            return 'yes'
+        else:
+            return 'no'
+
+    def get_magnet_loop_delay(self):
+        return self._CLOSE_BY_MAGNET_LOOP_DELAY
+
+    def get_timer_delay(self):
+        return self._CLOSE_BY_TIMER_DELAY
+
+    def get_timer_delay_forcibly(self):
+        return self._CLOSE_BY_TIMER_DELAY_FORCIBLY
+
     def set_close_by_magnet_loop(self, val):
         if isinstance(val, bool):
             self._close_by_magnet_loop = val

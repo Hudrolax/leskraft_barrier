@@ -13,9 +13,10 @@ class Keyboard(LoggerSuper):
     """
     logger = logging.getLogger('Keyboard')
 
-    def __init__(self, db):
+    def __init__(self, db, barrier):
         # Start keyboart queue thread
         self._db = db
+        self._barrier = barrier
         self.logger_level_classes = [Keyboard, HttpGetter, BarScanner, Barrier]
         self.inputThread = threading.Thread(target=self.read_kbd_input, args=(), daemon=True)
         self.inputThread.start()
@@ -58,6 +59,13 @@ class Keyboard(LoggerSuper):
                         else:
                             for cl in self.logger_level_classes:
                                 self.set_level(cmd_list[0], cl)
+                    elif 'settings' in cmd_list:
+                        _settings = 'Settings:\n'
+                        _settings += f'Closing by magnet loop: {self._barrier.get_closing_by_magnet_loop()}'
+                        _settings += f'Magnet loop delay: {self._barrier.get_magnet_loop_delay()}'
+                        _settings += f'Closing by timer timer: {self._barrier.get_timer_delay()}'
+                        _settings += f'Closing forcibly by timer timer: {self._barrier.get_timer_delay_forcibly()}'
+                        print(_settings)
                     elif 'exit' in cmd_list:
                         self.logger.info('Bye')
                         BaseClass.exit()

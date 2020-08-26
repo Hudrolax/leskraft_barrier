@@ -52,6 +52,6 @@ if __name__ == '__main__':
     http_getter.add_observer(barrier)
     led_assembly = LedAssembly(http_getter)
 
-    keyboard_input = Keyboard(data_base)
+    keyboard_input = Keyboard(data_base, barrier)
     while BaseClass.working():
         sleep(1)
