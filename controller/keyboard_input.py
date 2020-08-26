@@ -62,9 +62,9 @@ class Keyboard(LoggerSuper):
                     elif 'settings' in cmd_list:
                         _settings = 'Settings:\n'
                         _settings += f'Closing by magnet loop: {self._barrier.get_closing_by_magnet_loop()}\n'
-                        _settings += f'Magnet loop delay: {self._barrier.get_magnet_loop_delay()}\n'
-                        _settings += f'Closing by timer timer: {self._barrier.get_timer_delay()}\n'
-                        _settings += f'Closing forcibly by timer timer: {self._barrier.get_timer_delay_forcibly()}\n'
+                        _settings += f'Magnet loop delay: {self._barrier.get_magnet_loop_delay()} sec.\n'
+                        _settings += f'Closing by timer delay: {self._barrier.get_timer_delay()} sec.\n'
+                        _settings += f'Closing forcibly by timer selay: {self._barrier.get_timer_delay_forcibly()} sec.\n'
                         print(_settings)
                     elif 'exit' in cmd_list:
                         self.logger.info('Bye')
