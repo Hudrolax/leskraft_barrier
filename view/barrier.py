@@ -94,7 +94,7 @@ class Barrier(Observer, LoggerSuper):
                     self.logger.info(f'Закрыл шлагбаум по таймеру. Задержка после открытия {self._CLOSE_BY_TIMER_DELAY} сек.')
 
                 # closing by timer forcibly
-                if 0 < self._CLOSE_BY_TIMER_DELAY_FORCIBLY < (
+                if 7 < datetime.now().hour < 19 and 0 < self._CLOSE_BY_TIMER_DELAY_FORCIBLY < (
                         datetime.now() - self._closed_by_timer_forcibly_timer).total_seconds() and\
                         (datetime.now() - self._last_opening_time).total_seconds() > self._CLOSE_BY_TIMER_DELAY + self._CLOSE_BY_TIMER_DELAY_FORCIBLY:
                     self._closed_by_timer_forcibly_timer = datetime.now()
