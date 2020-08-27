@@ -11,7 +11,7 @@ class Magnet_loop(LoggerSuper):
     logger = logging.getLogger('Magnet_loop_view')
 
     def __init__(self):
-        self._LOOP_SIGNAL_DELAY = 2 # удлинение передачи сигнала с петли
+        self._LOOP_SIGNAL_DELAY = 1 # удлинение передачи сигнала с петли
         self._input_pin = 17
         self._ouput_pin = 25
         self._loop_state = False
