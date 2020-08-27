@@ -16,7 +16,7 @@ class Barrier(Observer, LoggerSuper):
     logger = logging.getLogger('Barrier')
 
     def __init__(self, model):
-        self._CLOSE_BY_MAGNET_LOOP_DELAY = 3
+        self._CLOSE_BY_MAGNET_LOOP_DELAY = 1
         self._CLOSE_BY_TIMER_DELAY = 120
         self._CLOSE_BY_TIMER_DELAY_FORCIBLY = 0
 
@@ -77,12 +77,10 @@ class Barrier(Observer, LoggerSuper):
         while BaseClass.working():
             # opening algorithm
             if self._to_open:
-                self.logger.debug('Открыл шлагбаум')
                 self.open()
-                self.model.reset_permission()
                 self._magnet_loop.wait_for_signal = True
-                sleep(8)
                 self._to_open = False
+                self.model.reset_permission()
 
             # closing by magnet loop
             if self._close_by_magnet_loop and self._openned and not self._magnet_loop.wait_for_signal\
@@ -101,10 +99,10 @@ class Barrier(Observer, LoggerSuper):
                     (datetime.now() - self._last_opening_time).total_seconds() > self._CLOSE_BY_TIMER_DELAY + self._CLOSE_BY_TIMER_DELAY_FORCIBLY:
                 self._closed_by_timer_forcibly_timer = datetime.now()
                 self.close()
-                self.logger.debug(
+                self.logger.info(
                     f'Закрыл шлагбаум по таймеру принудительно. Период закрытия каждые {self._CLOSE_BY_TIMER_DELAY_FORCIBLY} сек.')
 
-            sleep(0.5)
+            sleep(0.1)
 
 
     def model_is_changed(self):

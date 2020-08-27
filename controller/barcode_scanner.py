@@ -57,4 +57,4 @@ class BarScanner(LoggerSuper):
                 if _answer != "":
                     self.model.get_permission_by_code(_answer)
             else:
-                sleep(0.5)
+                sleep(0.2)
