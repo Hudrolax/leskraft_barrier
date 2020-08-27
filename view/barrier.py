@@ -16,7 +16,7 @@ class Barrier(Observer, LoggerSuper):
     logger = logging.getLogger('Barrier')
 
     def __init__(self, model):
-        self._CLOSE_BY_MAGNET_LOOP_DELAY = 1
+        self._CLOSE_BY_MAGNET_LOOP_DELAY = 5
         self._CLOSE_BY_TIMER_DELAY = 120
         self._CLOSE_BY_TIMER_DELAY_FORCIBLY = 0
 
@@ -81,26 +81,26 @@ class Barrier(Observer, LoggerSuper):
                 self._magnet_loop.wait_for_signal = True
                 self._to_open = False
                 self.model.reset_permission()
+            else:
+                # closing by magnet loop
+                if self._close_by_magnet_loop and self._openned and not self._magnet_loop.wait_for_signal\
+                        and (datetime.now() - self._magnet_loop.get_last_loop_output_signal()).total_seconds() > self._CLOSE_BY_MAGNET_LOOP_DELAY:
+                    self.close()
+                    self.logger.info(f'Закрыл шлагбаум по магнитной петле. Задержка после проезда {self._CLOSE_BY_MAGNET_LOOP_DELAY} сек.')
 
-            # closing by magnet loop
-            if self._close_by_magnet_loop and self._openned and not self._magnet_loop.wait_for_signal\
-                    and (datetime.now() - self._magnet_loop.get_last_loop_output_signal()).total_seconds() > self._CLOSE_BY_MAGNET_LOOP_DELAY:
-                self.close()
-                self.logger.info(f'Закрыл шлагбаум по магнитной петле. Задержка после проезда {self._CLOSE_BY_MAGNET_LOOP_DELAY} сек.')
+                # closing by timer
+                if self._CLOSE_BY_TIMER_DELAY > 0 and self._openned and (datetime.now() - self._last_opening_time).total_seconds() > self._CLOSE_BY_TIMER_DELAY:
+                    self.close()
+                    self.logger.info(f'Закрыл шлагбаум по таймеру. Задержка после открытия {self._CLOSE_BY_TIMER_DELAY} сек.')
 
-            # closing by timer
-            if self._CLOSE_BY_TIMER_DELAY > 0 and self._openned and (datetime.now() - self._last_opening_time).total_seconds() > self._CLOSE_BY_TIMER_DELAY:
-                self.close()
-                self.logger.info(f'Закрыл шлагбаум по таймеру. Задержка после открытия {self._CLOSE_BY_TIMER_DELAY} сек.')
-
-            # closing by timer forcibly
-            if 0 < self._CLOSE_BY_TIMER_DELAY_FORCIBLY < (
-                    datetime.now() - self._closed_by_timer_forcibly_timer).total_seconds() and\
-                    (datetime.now() - self._last_opening_time).total_seconds() > self._CLOSE_BY_TIMER_DELAY + self._CLOSE_BY_TIMER_DELAY_FORCIBLY:
-                self._closed_by_timer_forcibly_timer = datetime.now()
-                self.close()
-                self.logger.info(
-                    f'Закрыл шлагбаум по таймеру принудительно. Период закрытия каждые {self._CLOSE_BY_TIMER_DELAY_FORCIBLY} сек.')
+                # closing by timer forcibly
+                if 0 < self._CLOSE_BY_TIMER_DELAY_FORCIBLY < (
+                        datetime.now() - self._closed_by_timer_forcibly_timer).total_seconds() and\
+                        (datetime.now() - self._last_opening_time).total_seconds() > self._CLOSE_BY_TIMER_DELAY + self._CLOSE_BY_TIMER_DELAY_FORCIBLY:
+                    self._closed_by_timer_forcibly_timer = datetime.now()
+                    self.close()
+                    self.logger.info(
+                        f'Закрыл шлагбаум по таймеру принудительно. Период закрытия каждые {self._CLOSE_BY_TIMER_DELAY_FORCIBLY} сек.')
 
             sleep(0.1)
 
