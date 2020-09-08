@@ -66,6 +66,12 @@ class Keyboard(LoggerSuper):
                         _settings += f'Closing by timer delay: {self._barrier.get_timer_delay()} sec.\n'
                         _settings += f'Closing forcibly by timer selay: {self._barrier.get_timer_delay_forcibly()} sec.\n'
                         print(_settings)
+                    elif 'open' in cmd_list:
+                        self._barrier.open()
+                        print('opened by keyboard...')
+                    elif 'close' in cmd_list:
+                        self._barrier.close()
+                        print('closed by keyboard...')
                     elif 'exit' in cmd_list:
                         self.logger.info('Bye')
                         BaseClass.exit()
