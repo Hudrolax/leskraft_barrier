@@ -82,6 +82,9 @@ class Barrier(Observer, LoggerSuper):
                 self._to_open = False
                 self.model.reset_permission()
             else:
+                if (datetime.now() - self._last_opening_time).total_seconds() < 5:
+                    sleep(0.5)
+                    continue
                 # closing by magnet loop
                 if self._close_by_magnet_loop and self._openned and not self._magnet_loop.wait_for_signal\
                         and (datetime.now() - self._magnet_loop.get_last_loop_output_signal()).total_seconds() > self._CLOSE_BY_MAGNET_LOOP_DELAY:
