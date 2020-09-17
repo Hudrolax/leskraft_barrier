@@ -43,6 +43,8 @@ class BarScanner(LoggerSuper):
     def _get_bar_code_threaded(self):
         sleep(1)
         _last_barcode = None
+        _time_last_wait_for_scan = datetime.now()
+        _attempts = 0
         while BaseClass.working():
             if self._initialized:
                 if _last_barcode != '':
@@ -51,6 +53,7 @@ class BarScanner(LoggerSuper):
                     _answer = self._com_port.readline().decode().replace('\n', '')
                     if _answer != '':
                         self.logger.info(f'{datetime.strftime(datetime.now(), "%d.%m.%y %H:%M:%S")}: {repr(_answer)}')
+                        _attempts = 0
                 except:
                     self._inicialize_com_port()
                     continue
@@ -58,3 +61,10 @@ class BarScanner(LoggerSuper):
                     self.model.get_permission_by_code(_answer)
             else:
                 sleep(0.2)
+            if (datetime.now() - _time_last_wait_for_scan).total_seconds() < 1:
+                _attempts += 1
+            else:
+                _attempts = 0
+            _time_last_wait_for_scan = datetime.now()
+            if _attempts > 50:
+                print("need reboot")

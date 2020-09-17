@@ -90,10 +90,9 @@ class HttpGetter(LoggerSuper):
 
                 self._db.open_codes = copy.deepcopy(_codelist)
                 self._db.commit()
+                self._last_connected_time = datetime.now()
             except:
                 self.logger.error('Не смог распарсить JSON')
-
-            self._last_connected_time = datetime.now()
         except:
             self.logger.error(f'get_open_codes connection error to http://{self._server}:{self._port}{self._open_codes_route}')
 
