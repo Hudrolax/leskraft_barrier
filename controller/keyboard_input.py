@@ -4,6 +4,7 @@ from utility.logger_super import LoggerSuper
 from utility.base_class import BaseClass
 from model.http_getter import HttpGetter
 from view.barrier import Barrier
+from model.magnet_loop import Magnet_loop
 from controller.barcode_scanner import BarScanner
 from utility.reboot import reboot
 
@@ -18,7 +19,7 @@ class Keyboard(LoggerSuper):
         # Start keyboart queue thread
         self._db = db
         self._barrier = barrier
-        self.logger_level_classes = [Keyboard, HttpGetter, BarScanner, Barrier]
+        self.logger_level_classes = [Keyboard, HttpGetter, BarScanner, Barrier, Magnet_loop]
         self.inputThread = threading.Thread(target=self.read_kbd_input, args=(), daemon=True)
         self.inputThread.start()
         self.logger.info('start keyboard thread')

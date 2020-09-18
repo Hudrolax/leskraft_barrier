@@ -88,8 +88,6 @@ class Barrier(Observer, LoggerSuper):
                 self.model.reset_permission()
                 _message_sended1 = False
             else:
-                self.logger.debug(f'Magnet loop state: {self._magnet_loop.get_loop_state_str()}')
-
                 if (datetime.now() - self._last_opening_time).total_seconds() < 3 or self._magnet_loop.get_loop_state():
                     sleep(0.1)
                     continue

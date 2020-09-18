@@ -67,6 +67,7 @@ class Magnet_loop(LoggerSuper):
 
             if self._loop_state != self._prev_loop_state:
                 # состояние петли изменилось
+                self.logger.debug(f'Magnet loop state: {self.get_loop_state_str()}')
                 if self._loop_state:
                     # на петлю наехали
                     pass
