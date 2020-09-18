@@ -16,7 +16,7 @@ class Barrier(Observer, LoggerSuper):
     logger = logging.getLogger('Barrier')
 
     def __init__(self, model):
-        self._CLOSE_BY_MAGNET_LOOP_DELAY = 1
+        self._CLOSE_BY_MAGNET_LOOP_DELAY = 0
         self._CLOSE_BY_TIMER_DELAY = 120
         self._CLOSE_BY_TIMER_DELAY_FORCIBLY = 0
 
