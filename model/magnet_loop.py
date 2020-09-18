@@ -28,6 +28,12 @@ class Magnet_loop(LoggerSuper):
     def get_loop_state(self):
         return self._loop_state
 
+    def get_loop_state_str(self):
+        if self._loop_state:
+            return 'Signal'
+        else:
+            return 'No'
+
     def get_last_loop_output_signal(self):
         return self._last_loop_output_signal
 
