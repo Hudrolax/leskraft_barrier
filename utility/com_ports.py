@@ -14,7 +14,7 @@ class COM_port:
         self.inicialize_com_port()
 
     def inicialize_com_port(self):
-        if not self._initialized:
+        if not self.initialized:
             try:
                 self.serial.close()
             except:
@@ -25,10 +25,10 @@ class COM_port:
                     try:
                         self.serial = serial.Serial(_port.device, self._speed, timeout=self._timeout)
                         self.serial.write_timeout = 1
-                        self._initialized = True
+                        self.initialized = True
                         self.logger.info(f'COM-port {self.name} initialized in the port {_port.device} ({_port.description})')
                     except:
                         self.logger.error(f'Error initialize {self.name} in the port {_port.device} ({_port.description})')
-            if not self._initialized:
+            if not self.initialized:
                 self.logger.critical(f'{self.name} initialize error!!! PID {self.PID} does not exist')
                 raise Exception(f'{self.name} initialize error!!! PID {self.PID} does not exist')
