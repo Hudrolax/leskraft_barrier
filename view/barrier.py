@@ -16,7 +16,7 @@ class Barrier(Observer, LoggerSuper):
     logger = logging.getLogger('Barrier')
 
     def __init__(self, model):
-        self._CLOSE_BY_MAGNET_LOOP_DELAY = 1
+        self._CLOSE_BY_MAGNET_LOOP_DELAY = 0
         self._CLOSE_BY_TIMER_DELAY = 120
         self._CLOSE_BY_TIMER_DELAY_FORCIBLY = 0
 
@@ -28,7 +28,7 @@ class Barrier(Observer, LoggerSuper):
         self._to_open = False
         self._openned = False
         self._closed_by_timer_forcibly_timer = datetime.now()
-        self._wait_for_magnet_loop_signal = False
+
         GPIO.setwarnings(False)
         GPIO.setup(self._open_pin, GPIO.OUT)  # Настраиваем GPIO пин на вывод
         GPIO.setup(self._close_pin, GPIO.OUT)  # Настраиваем GPIO пин на вывод
@@ -65,7 +65,6 @@ class Barrier(Observer, LoggerSuper):
         GPIO.output(self._open_pin, False)
         sleep(1)
         GPIO.output(self._open_pin, True)
-        self._wait_for_magnet_loop_signal = True
         self.logger.info('открыл шлагбаум')
 
     def close(self):
@@ -84,23 +83,23 @@ class Barrier(Observer, LoggerSuper):
             if self._to_open:
                 self.open()
                 self._to_open = False
+                self._magnet_loop.add_car_for_passing()
                 self.model.reset_permission()
             else:
                 self.logger.debug(f'Magnet loop state: {self._magnet_loop.get_loop_state_str()}')
-                if self._magnet_loop.get_loop_state():
-                    self._wait_for_magnet_loop_signal = False
-                    sleep(0.1)
-                    continue
 
-                if (datetime.now() - self._last_opening_time).total_seconds() < 3:
+                if (datetime.now() - self._last_opening_time).total_seconds() < 3 or self._magnet_loop.get_loop_state():
                     sleep(0.1)
                     continue
 
                 # closing by magnet loop
-                if self._close_by_magnet_loop and self._openned and not self._wait_for_magnet_loop_signal\
+                if self._close_by_magnet_loop and self._openned\
                         and (datetime.now() - self._magnet_loop.get_last_loop_output_signal()).total_seconds() > self._CLOSE_BY_MAGNET_LOOP_DELAY:
-                    self.close()
-                    self.logger.info(f'Закрыл шлагбаум по магнитной петле. Задержка после проезда {self._CLOSE_BY_MAGNET_LOOP_DELAY} сек.')
+                    if self._magnet_loop.get_cars_for_passing() == 0:
+                        self.close()
+                        self.logger.info(f'Закрыл шлагбаум по магнитной петле. Задержка после проезда {self._CLOSE_BY_MAGNET_LOOP_DELAY} сек.')
+                    else:
+                        self.logger.info(f'Не закрыл по петле, т.к. должны проехать еще {self._magnet_loop.get_cars_for_passing()} машин.')
 
                 # closing by timer
                 if self._CLOSE_BY_TIMER_DELAY > 0 and self._openned and (datetime.now() - self._last_opening_time).total_seconds() > self._CLOSE_BY_TIMER_DELAY:
