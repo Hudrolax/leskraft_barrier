@@ -86,6 +86,7 @@ class Barrier(Observer, LoggerSuper):
                 self._to_open = False
                 self.model.reset_permission()
             else:
+                print(self._magnet_loop.get_loop_state())
                 if self._magnet_loop.get_loop_state():
                     self._wait_for_magnet_loop_signal = False
                     sleep(0.1)
