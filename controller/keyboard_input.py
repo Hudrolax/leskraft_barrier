@@ -56,11 +56,16 @@ class Keyboard(LoggerSuper):
                     if 'codes' in cmd_list:
                         print(self._db.print_open_codes())
                     elif 'debug' == cmd_list[0] or 'info' == cmd_list[0] or 'warning' == cmd_list[0]:
-                        if len(cmd_list) == 2:
-                            self.set_level(cmd_list[0], cmd_list[1])
-                        else:
+                        if 'help' in cmd_list:
+                            print("Logged classes:")
                             for cl in self.logger_level_classes:
-                                self.set_level(cmd_list[0], cl)
+                                print(f"   {str(cl)}")
+                        else:
+                            if len(cmd_list) == 2:
+                                self.set_level(cmd_list[0], cmd_list[1])
+                            else:
+                                for cl in self.logger_level_classes:
+                                    self.set_level(cmd_list[0], cl)
                     elif 'settings' in cmd_list:
                         _settings = 'Settings:\n'
                         _settings += f'Closing by magnet loop: {self._barrier.get_closing_by_magnet_loop()}\n'
