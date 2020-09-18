@@ -59,7 +59,7 @@ class Keyboard(LoggerSuper):
                         if 'help' in cmd_list:
                             print("Logged classes:")
                             for cl in self.logger_level_classes:
-                                print(f"   {str(cl)}")
+                                print(f"   {type(cl)}")
                         else:
                             if len(cmd_list) == 2:
                                 self.set_level(cmd_list[0], cmd_list[1])
