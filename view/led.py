@@ -83,7 +83,7 @@ class LedAssembly:
                 self._sleep(1000, 1)
             elif self._mode == 2:
                 self.red_led.led_off()
-                for k in range (0, 30):
+                for k in range (0, 15):
                     self.green_led.led_on()
                     sleep(0.125)
                     self.green_led.led_off()

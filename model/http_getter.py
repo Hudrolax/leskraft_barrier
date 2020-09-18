@@ -117,7 +117,7 @@ class HttpGetter(LoggerSuper):
             self.notify_observers()
             self.logger.info(f'Получено разрешение на открытие по коду {code} в _db.open_codes')
             self._send_opening_event(code)
-            sleep(2)
+            sleep(5)
             self._permission = False
         else:
             self.logger.info(f'Отказано в разрешении на открытие по коду {code}')

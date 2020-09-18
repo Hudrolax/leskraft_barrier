@@ -91,7 +91,7 @@ class Barrier(Observer, LoggerSuper):
                     sleep(0.1)
                     continue
 
-                if (datetime.now() - self._last_opening_time).total_seconds() < 5:
+                if (datetime.now() - self._last_opening_time).total_seconds() < 3:
                     sleep(0.1)
                     continue
 
