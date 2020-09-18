@@ -1,5 +1,3 @@
-import serial
-import serial.tools.list_ports as lp
 from utility.com_ports import COM_port
 import threading
 from time import sleep

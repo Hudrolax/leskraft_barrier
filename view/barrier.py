@@ -16,7 +16,7 @@ class Barrier(Observer, LoggerSuper):
     logger = logging.getLogger('Barrier')
 
     def __init__(self, model):
-        self._CLOSE_BY_MAGNET_LOOP_DELAY = 5
+        self._CLOSE_BY_MAGNET_LOOP_DELAY = 1
         self._CLOSE_BY_TIMER_DELAY = 120
         self._CLOSE_BY_TIMER_DELAY_FORCIBLY = 0
 
@@ -28,6 +28,7 @@ class Barrier(Observer, LoggerSuper):
         self._to_open = False
         self._openned = False
         self._closed_by_timer_forcibly_timer = datetime.now()
+        self._wait_for_magnet_loop_signal = False
         GPIO.setwarnings(False)
         GPIO.setup(self._open_pin, GPIO.OUT)  # Настраиваем GPIO пин на вывод
         GPIO.setup(self._close_pin, GPIO.OUT)  # Настраиваем GPIO пин на вывод
@@ -64,29 +65,38 @@ class Barrier(Observer, LoggerSuper):
         GPIO.output(self._open_pin, False)
         sleep(1)
         GPIO.output(self._open_pin, True)
+        self._wait_for_magnet_loop_signal = True
         self.logger.info('открыл шлагбаум')
 
     def close(self):
-        GPIO.output(self._close_pin, False)
-        sleep(1)
-        GPIO.output(self._close_pin, True)
-        self._openned = False
-        self.logger.info('закрыл шлагбаум')
+        if not self._magnet_loop.get_loop_state:
+            GPIO.output(self._close_pin, False)
+            sleep(1)
+            GPIO.output(self._close_pin, True)
+            self._openned = False
+            self.logger.info('закрыл шлагбаум')
+        else:
+            self.logger.info('Не могу закрыть шлагбаум, магнитная петля видит машину!')
 
     def _threaded_func(self):
         while BaseClass.working():
             # opening algorithm
             if self._to_open:
                 self.open()
-                self._magnet_loop.wait_for_signal = True
                 self._to_open = False
                 self.model.reset_permission()
             else:
-                if (datetime.now() - self._last_opening_time).total_seconds() < 5:
-                    sleep(0.5)
+                if self._magnet_loop.get_loop_state():
+                    self._wait_for_magnet_loop_signal = False
+                    sleep(0.1)
                     continue
+
+                if (datetime.now() - self._last_opening_time).total_seconds() < 5:
+                    sleep(0.1)
+                    continue
+
                 # closing by magnet loop
-                if self._close_by_magnet_loop and self._openned and not self._magnet_loop.wait_for_signal\
+                if self._close_by_magnet_loop and self._openned and not self._wait_for_magnet_loop_signal\
                         and (datetime.now() - self._magnet_loop.get_last_loop_output_signal()).total_seconds() > self._CLOSE_BY_MAGNET_LOOP_DELAY:
                     self.close()
                     self.logger.info(f'Закрыл шлагбаум по магнитной петле. Задержка после проезда {self._CLOSE_BY_MAGNET_LOOP_DELAY} сек.')
