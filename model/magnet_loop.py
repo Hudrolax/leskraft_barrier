@@ -17,6 +17,7 @@ class Magnet_loop(LoggerSuper):
         self._loop_state = False
         self._last_loop_output_signal = datetime.now()
         self._wait_for_signal = True
+        self._loop_true_signal_timer = 0
         GPIO.setwarnings(False)
         GPIO.setup(self._input_pin, GPIO.IN)
         GPIO.setup(self._ouput_pin, GPIO.OUT)
@@ -42,13 +43,23 @@ class Magnet_loop(LoggerSuper):
         return self._last_loop_output_signal
 
     def _threaded_read_input_pin(self):
+        """"
+        Функция в потоке проверяет сигнал с магнитной петли
+        Сработка магнитной петли считается моментально после получения HIGH
+        Окончание сработки считается через _N повторений цикла с учетом паузы 0.1 сек
+        """
+        _N = 20
         while BaseClass.working():
             if GPIO.input(self._input_pin) == GPIO.HIGH:
+                self._loop_true_signal_timer = _N # цикл срабатывает раз в 0.1с, значит через _N отсчетов пройдет _N/10 сек
                 self._loop_state = True
                 self._last_loop_output_signal = datetime.now()
                 self._wait_for_signal = False
             else:
-                self._loop_state = False
+                if self._loop_true_signal_timer > 0:
+                    self._loop_true_signal_timer -= 1
+                if self._loop_true_signal_timer == 0:
+                    self._loop_state = False
             sleep(0.1)
 
     def _threaded_output_loop(self):

@@ -1,4 +1,6 @@
 import serial
+import serial.tools.list_ports as lp
+from utility.com_ports import COM_port
 import threading
 from time import sleep
 from utility.logger_super import LoggerSuper
@@ -6,20 +8,14 @@ from utility.base_class import BaseClass
 import logging
 
 
-class WatchDog(LoggerSuper, BaseClass):
+class WatchDog(LoggerSuper, BaseClass, COM_port):
     logger = logging.getLogger('CWatchDog')
 
-    def __init__(self, port):
-        self.port = port  # порт подключения вотчдога
-        self._serial = serial.Serial(self.port, 9600, timeout=1)  # change ACM number as found from ls /dev/tty/ACM*
-        self._serial.flushInput()
-        self._serial.flushOutput()
-        self._serial.baudrate = 9600
-        self._serial.timeout = 1
-        self._serial.write_timeout = 1
+    def __init__(self, PID):
+        super().__init__('WatchDog', PID, 9600, 1)
+
         self._watchdog_thread = threading.Thread(target=self._ping, args=(), daemon=True)
         self._watchdog_thread.start()
-        self.logger.info('watchdog initialized at port ' + self.port)
 
     @classmethod
     def _send_to_serial(cls, _s_port, s):
@@ -30,5 +26,5 @@ class WatchDog(LoggerSuper, BaseClass):
 
     def _ping(self):
         while self.working():
-            self._send_to_serial(self._serial, '~U')  # Отправка команды "я в норме" на вотчдог
+            self._send_to_serial(self.serial, '~U')  # Отправка команды "я в норме" на вотчдог
             sleep(3)

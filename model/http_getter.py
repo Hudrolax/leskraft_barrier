@@ -88,8 +88,11 @@ class HttpGetter(LoggerSuper):
                 except:
                     self.logger.error(f'_get_open_codes type error. _permissions_of_closing[2] need integer, but {type(_permissions_of_closing[2])} got.')
 
-                self._db.open_codes = copy.deepcopy(_codelist)
-                self._db.commit()
+                try:
+                    self._db.open_codes = copy.deepcopy(_codelist)
+                    self._db.commit()
+                except:
+                    self.logger.error('DB commit error!')
                 self._last_connected_time = datetime.now()
             except:
                 self.logger.error('Не смог распарсить JSON')
