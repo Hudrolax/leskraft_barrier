@@ -51,7 +51,7 @@ class Magnet_loop(LoggerSuper):
         Сработка магнитной петли считается моментально после получения HIGH
         Окончание сработки считается через _N повторений цикла с учетом паузы 0.1 сек
         """
-        _N = 20
+        _N = 10
         while BaseClass.working():
             if GPIO.input(self._input_pin) == GPIO.HIGH:
                 self._loop_true_signal_timer = _N # цикл срабатывает раз в 0.1с, значит через _N отсчетов пройдет _N/10 сек

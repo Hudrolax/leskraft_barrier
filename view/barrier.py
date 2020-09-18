@@ -16,7 +16,7 @@ class Barrier(Observer, LoggerSuper):
     logger = logging.getLogger('Barrier')
 
     def __init__(self, model):
-        self._CLOSE_BY_MAGNET_LOOP_DELAY = 0
+        self._CLOSE_BY_MAGNET_LOOP_DELAY = 1
         self._CLOSE_BY_TIMER_DELAY = 120
         self._CLOSE_BY_TIMER_DELAY_FORCIBLY = 0
 
@@ -78,6 +78,7 @@ class Barrier(Observer, LoggerSuper):
             self.logger.info('Не могу закрыть шлагбаум, магнитная петля видит машину!')
 
     def _threaded_func(self):
+        _message_sended1 = False
         while BaseClass.working():
             # opening algorithm
             if self._to_open:
@@ -85,6 +86,7 @@ class Barrier(Observer, LoggerSuper):
                 self._to_open = False
                 self._magnet_loop.add_car_for_passing()
                 self.model.reset_permission()
+                _message_sended1 = False
             else:
                 self.logger.debug(f'Magnet loop state: {self._magnet_loop.get_loop_state_str()}')
 
@@ -99,7 +101,9 @@ class Barrier(Observer, LoggerSuper):
                         self.close()
                         self.logger.info(f'Закрыл шлагбаум по магнитной петле. Задержка после проезда {self._CLOSE_BY_MAGNET_LOOP_DELAY} сек.')
                     else:
-                        self.logger.info(f'Не закрыл по петле, т.к. должны проехать еще {self._magnet_loop.get_cars_for_passing()} машин.')
+                        if not _message_sended1:
+                            self.logger.info(f'Не закрыл по петле, т.к. должны проехать еще {self._magnet_loop.get_cars_for_passing()} машин.')
+                            _message_sended1 = True
 
                 # closing by timer
                 if self._CLOSE_BY_TIMER_DELAY > 0 and self._openned and (datetime.now() - self._last_opening_time).total_seconds() > self._CLOSE_BY_TIMER_DELAY:
