@@ -5,6 +5,7 @@ from utility.base_class import BaseClass
 from model.http_getter import HttpGetter
 from view.barrier import Barrier
 from controller.barcode_scanner import BarScanner
+from utility.reboot import reboot
 
 
 class Keyboard(LoggerSuper):
@@ -75,5 +76,7 @@ class Keyboard(LoggerSuper):
                     elif 'exit' in cmd_list:
                         self.logger.info('Bye')
                         BaseClass.exit()
+                    elif 'reboot' in cmd_list:
+                        reboot()
             except:
                 continue
