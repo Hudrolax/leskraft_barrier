@@ -28,7 +28,8 @@ class Magnet_loop(LoggerSuper):
         self._output_thread.start()
 
     def add_car_for_passing(self):
-        self._cars_for_passing += 1
+        #self._cars_for_passing += 1
+        self._cars_for_passing = 1
 
     def get_cars_for_passing(self):
         return self._cars_for_passing
