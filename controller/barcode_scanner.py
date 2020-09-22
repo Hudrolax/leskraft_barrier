@@ -40,7 +40,10 @@ class BarScanner(COM_port, LoggerSuper):
                     self.initialized = False
                     self.inicialize_com_port()
                 if _answer != "":
-                    self.model.get_permission_by_code(_answer)
+                    if _answer.find('t=') == -1:
+                        self.model.get_permission_by_code(_answer)
+                    else:
+                        self.logger.warning(f'Got wrong code format: {_answer}')
             else:
                 sleep(0.2)
             if (datetime.now() - _time_last_wait_for_scan).total_seconds() < 1:
