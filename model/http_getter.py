@@ -54,10 +54,13 @@ class HttpGetter(LoggerSuper):
         return self._permission
 
     def _get_open_codes_thread_func(self):
-        while BaseClass.working():
-            self._get_open_codes()
-            self.notify_observers()
-            sleep(5)
+        while True:
+            try:
+                self._get_open_codes()
+                self.notify_observers()
+                sleep(5)
+            except Exception as e:
+                print(f'_get_open_codes_thread_func: {e}')
 
     def _get_open_codes(self):
         try:
@@ -135,3 +138,14 @@ class HttpGetter(LoggerSuper):
     def notify_observers(self):
         for x in self._observers:
             x.model_is_changed()
+
+
+
+if __name__ == '__main__':
+    start = datetime.now()
+    response = requests.get(f"http://{'85.172.104.127'}:{'8182'}{'/trade2019/hs/barrier/get_open_codes'}",
+                            auth=('http_services', 'lk93295841lk'))
+    finish = datetime.now()
+    total = (finish - start).total_seconds()
+    print(total)
+    _answer = response.content.decode()
