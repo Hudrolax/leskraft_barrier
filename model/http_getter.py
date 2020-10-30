@@ -58,7 +58,7 @@ class HttpGetter(LoggerSuper):
             try:
                 self._get_open_codes()
                 self.notify_observers()
-                sleep(5)
+                sleep(30)
             except Exception as e:
                 print(f'_get_open_codes_thread_func: {e}')
 

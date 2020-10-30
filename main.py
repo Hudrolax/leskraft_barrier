@@ -14,18 +14,19 @@ from RPi import GPIO
 
 
 if __name__ == '__main__':
+    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
     WRITE_LOG_TO_FILE = False
     LOG_FORMAT = '%(name)s (%(levelname)s) %(asctime)s: %(message)s'
     LOG_LEVEL = logging.INFO
     logger = logging.getLogger('main')
 
     if WRITE_LOG_TO_FILE:
+
         logging.basicConfig(filename='leskraft_barrier.txt', filemode='w', format=LOG_FORMAT, level=LOG_LEVEL,
                             datefmt='%d/%m/%y %H:%M:%S')
     else:
         logging.basicConfig(format=LOG_FORMAT, level=LOG_LEVEL, datefmt='%d/%m/%y %H:%M:%S')
 
-    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
     load_dotenv(dotenv_path=os.path.join(BASE_DIR, ".env"))
 
     opengate_server = os.getenv("OPENGATE_SERVER")
