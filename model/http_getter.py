@@ -64,7 +64,7 @@ class HttpGetter(LoggerSuper):
 
     def _get_open_codes(self):
         try:
-            response = requests.get(f"http://{self._server}:{self._port}{self._open_codes_route}", auth=(self._username, self._password))
+            response = requests.get(f"http://{self._server}:{self._port}{self._open_codes_route}", auth=(self._username, self._password), timeout=5)
             _answer = response.content.decode()
             self.logger.debug(f'get_open_codes answer: {_answer}')
             try:
@@ -144,7 +144,7 @@ class HttpGetter(LoggerSuper):
 if __name__ == '__main__':
     start = datetime.now()
     response = requests.get(f"http://{'85.172.104.127'}:{'8182'}{'/trade2019/hs/barrier/get_open_codes'}",
-                            auth=('http_services', 'lk93295841lk'))
+                            auth=('http_services', 'lk93295841lk'), timeout=5)
     finish = datetime.now()
     total = (finish - start).total_seconds()
     print(total)
