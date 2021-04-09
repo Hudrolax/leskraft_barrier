@@ -16,7 +16,7 @@ class Telegram_bot(LoggerSuper):
         # Start the Bot
         self.updater.start_polling()
 
-    def get_text_message(update: Update, _: CallbackContext):
+    def get_text_message(update: Update, _: CallbackContext) -> None:
         update.message.reply_text('Please type "/start"')
 
     def start(self, update: Update, _: CallbackContext) -> None:
@@ -26,9 +26,7 @@ class Telegram_bot(LoggerSuper):
                 InlineKeyboardButton("Close", callback_data='close'),
             ],
         ]
-
         reply_markup = InlineKeyboardMarkup(keyboard)
-
         update.message.reply_text('Please choose:', reply_markup=reply_markup)
 
     def button(self, update: Update, _: CallbackContext):
