@@ -5,36 +5,32 @@ from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, Callback
 
 class Telegram_bot(LoggerSuper):
     logger = logging.getLogger('telebot')
-    def __init__(self, token, barrier):
-        self.logger.info('Запускаем телеграм бота')
+    def __init__(self, token, barrier, admins):
+        self.admins = admins.split(',')
+        for admin in self.admins:
+            admin = admin.replace(' ', '')
         self.barrier = barrier
         self.updater = Updater(token)
-        self.updater.dispatcher.add_handler(CommandHandler('start', self.start))
+        self.updater.dispatcher.add_handler(CommandHandler('start', self._proc))
         self.updater.dispatcher.add_handler(CallbackQueryHandler(self.button))
-        self.updater.dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, self.get_text_message))
+        self.updater.dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, self._proc))
 
         # Start the Bot
         self.updater.start_polling()
+        self.logger.info(f'Запустил телеграм бота. Админы {self.admins}')
 
-    def get_text_message(self, update: Update, _: CallbackContext) -> None:
-        keyboard = [
-            [
-                InlineKeyboardButton("Open", callback_data='open'),
-                InlineKeyboardButton("Close", callback_data='close'),
-            ],
-        ]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        update.message.reply_text('Please choose:', reply_markup=reply_markup)
-
-    def start(self, update: Update, _: CallbackContext) -> None:
-        keyboard = [
-            [
-                InlineKeyboardButton("Open", callback_data='open'),
-                InlineKeyboardButton("Close", callback_data='close'),
-            ],
-        ]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        update.message.reply_text('Please choose:', reply_markup=reply_markup)
+    def _proc(self, update: Update, _: CallbackContext):
+        if update.message.from_user.id in self.admins:
+            keyboard = [
+                [
+                    InlineKeyboardButton("Open", callback_data='open'),
+                    InlineKeyboardButton("Close", callback_data='close'),
+                ],
+            ]
+            reply_markup = InlineKeyboardMarkup(keyboard)
+            update.message.reply_text('Please choose:', reply_markup=reply_markup)
+        else:
+            update.message.reply_text(f'Кто ты чудовище? Твой ID {update.message.from_user.id}')
 
     def button(self, update: Update, _: CallbackContext):
         query = update.callback_query

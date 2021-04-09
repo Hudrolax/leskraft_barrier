@@ -29,7 +29,7 @@ def help_command(update: Update, _: CallbackContext) -> None:
 
 def echo(update: Update, _: CallbackContext) -> None:
     """Echo the user message."""
-    update.message.reply_text(update.message.text)
+    update.message.reply_text(update.message.from_user.id)
 
 
 def main() -> None:

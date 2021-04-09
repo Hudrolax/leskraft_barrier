@@ -39,6 +39,7 @@ if __name__ == '__main__':
     bar_scanner_pid = os.getenv("BAR_SCANNER_PID")
     watchdog_pid = os.getenv("WATCHDOG_PID")
     telegram_api_token = os.getenv("TELEGRAM_API_TOKEN")
+    telegram_bot_admins = os.getenv("ADMINS")
 
     GPIO.setmode(GPIO.BCM)
     logger.info("Let's go")
@@ -54,7 +55,7 @@ if __name__ == '__main__':
     barrier = Barrier(http_getter)
     http_getter.add_observer(barrier)
     led_assembly = LedAssembly(http_getter)
-    telegram_bot = Telegram_bot(telegram_api_token, barrier)
+    telegram_bot = Telegram_bot(telegram_api_token, barrier, telegram_bot_admins)
 
     keyboard_input = Keyboard(data_base, barrier)
     while BaseClass.working():
