@@ -37,6 +37,7 @@ if __name__ == '__main__':
     opengate_password = os.getenv("OPENGATE_PASS")
     bar_scanner_pid = os.getenv("BAR_SCANNER_PID")
     watchdog_pid = os.getenv("WATCHDOG_PID")
+    telegram_api_token = os.getenv("TELEGRAM_API_TOKEN")
 
     GPIO.setmode(GPIO.BCM)
     logger.info("Let's go")
