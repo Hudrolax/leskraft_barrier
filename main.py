@@ -10,6 +10,7 @@ from time import sleep
 import os
 from dotenv import load_dotenv
 import logging
+from model.telegram_bot import Telegram_bot
 from RPi import GPIO
 
 
@@ -53,6 +54,7 @@ if __name__ == '__main__':
     barrier = Barrier(http_getter)
     http_getter.add_observer(barrier)
     led_assembly = LedAssembly(http_getter)
+    telegram_bot = Telegram_bot(telegram_api_token, barrier)
 
     keyboard_input = Keyboard(data_base, barrier)
     while BaseClass.working():

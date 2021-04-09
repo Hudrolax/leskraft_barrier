@@ -66,6 +66,7 @@ class Barrier(Observer, LoggerSuper):
         sleep(1)
         GPIO.output(self._open_pin, True)
         self.logger.info('открыл шлагбаум')
+        return 'открыл шлагбаум'
 
     def close(self):
         if not self._magnet_loop.get_loop_state():
@@ -74,8 +75,10 @@ class Barrier(Observer, LoggerSuper):
             GPIO.output(self._close_pin, True)
             self._openned = False
             self.logger.info('закрыл шлагбаум')
+            return 'закрыл шлагбаум'
         else:
             self.logger.info('Не могу закрыть шлагбаум, магнитная петля видит машину!')
+            return 'Не могу закрыть шлагбаум, магнитная петля видит машину!'
 
     def _threaded_func(self):
         _message_sended1 = False
