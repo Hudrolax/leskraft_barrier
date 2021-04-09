@@ -6,6 +6,7 @@ from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, Callback
 class Telegram_bot(LoggerSuper):
     logger = logging.getLogger('telebot')
     def __init__(self, token, barrier):
+        self.logger.info('Запускаем телеграм бота')
         self.barrier = barrier
         self.updater = Updater(token)
         self.updater.dispatcher.add_handler(CommandHandler('start', self.start))
