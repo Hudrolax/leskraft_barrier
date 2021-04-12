@@ -20,6 +20,7 @@ class Telegram_bot(LoggerSuper):
         self.logger.info(f'Запустил телеграм бота. Админы {self.admins}')
 
     def _proc(self, update: Update, _: CallbackContext):
+        self.logger.info(f'get cmd from ID {update.message.from_user.id}')
         if str(update.message.from_user.id) in self.admins:
             keyboard = [
                 [
