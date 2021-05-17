@@ -16,9 +16,9 @@ from RPi import GPIO
 
 if __name__ == '__main__':
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-    WRITE_LOG_TO_FILE = False
+    WRITE_LOG_TO_FILE = True
     LOG_FORMAT = '%(name)s (%(levelname)s) %(asctime)s: %(message)s'
-    LOG_LEVEL = logging.INFO
+    LOG_LEVEL = logging.ERROR
     logger = logging.getLogger('main')
 
     if WRITE_LOG_TO_FILE:
