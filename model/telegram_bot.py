@@ -16,7 +16,10 @@ class Telegram_bot(LoggerSuper):
         self.updater.dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, self._proc))
 
         # Start the Bot
-        self.updater.start_polling()
+        try:
+            self.updater.start_polling()
+        except Exception as ex:
+            self.logger.critical(ex)
         self.logger.info(f'Запустил телеграм бота. Админы {self.admins}')
 
     def _proc(self, update: Update, _: CallbackContext):
