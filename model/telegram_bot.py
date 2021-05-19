@@ -10,7 +10,7 @@ class Telegram_bot(LoggerSuper):
         self.admins = admins.split(',')
 
         self.barrier = barrier
-        self.updater = Updater(token)
+        self.updater = Updater(token, request_kwargs = { 'read_timeout' : 6 , 'connect_timeout' : 7 })
         self.updater.dispatcher.add_handler(CommandHandler('start', self._proc))
         self.updater.dispatcher.add_handler(CallbackQueryHandler(self.button))
         self.updater.dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, self._proc))
