@@ -14,13 +14,14 @@ class Telegram_bot(LoggerSuper):
         self.updater.dispatcher.add_handler(CommandHandler('start', self._proc))
         self.updater.dispatcher.add_handler(CallbackQueryHandler(self.button))
         self.updater.dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, self._proc))
+        self.updater.dispatcher.add_error_handler(self.error_handler)
 
         # Start the Bot
-        try:
-            self.updater.start_polling()
-        except Exception as ex:
-            self.logger.critical(ex)
         self.logger.info(f'Запустил телеграм бота. Админы {self.admins}')
+        self.updater.start_polling()
+
+    def error_handler(self, update: object, context: CallbackContext) -> None:
+        self.logger.error(msg="Exception while handling an update:", exc_info=context.error)
 
     def _proc(self, update: Update, _: CallbackContext):
         try:
@@ -35,7 +36,7 @@ class Telegram_bot(LoggerSuper):
                 reply_markup = InlineKeyboardMarkup(keyboard)
                 update.message.reply_text('Please choose:', reply_markup=reply_markup)
             else:
-                update.message.reply_text(f'Кто ты чудовище? Твой ID {update.message.from_user.id}')
+                update.message.reply_text(f'Сообщите свой ID в отдел IT и попробуйте еще раз после внесения вас в список. Твой ID {update.message.from_user.id}')
         except Exception as ex:
             self.logger.critical(ex)
 
