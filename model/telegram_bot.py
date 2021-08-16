@@ -10,7 +10,8 @@ class Telegram_bot(LoggerSuper):
         self.admins = admins.split(',')
 
         self.barrier = barrier
-        self.updater = Updater(token, request_kwargs = { 'read_timeout' : 6 , 'connect_timeout' : 7 })
+        # self.updater = Updater(token, request_kwargs = { 'read_timeout' : 6 , 'connect_timeout' : 7 })
+        self.updater = Updater(token)
         self.updater.dispatcher.add_handler(CommandHandler('start', self._proc))
         self.updater.dispatcher.add_handler(CallbackQueryHandler(self.button))
         self.updater.dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, self._proc))
@@ -18,7 +19,7 @@ class Telegram_bot(LoggerSuper):
 
         # Start the Bot
         self.logger.info(f'Запустил телеграм бота. Админы {self.admins}')
-        self.updater.start_polling()
+        self.updater.start_polling(clean=False)
 
     def error_handler(self, update: object, context: CallbackContext) -> None:
         self.logger.error(msg="Exception while handling an update:", exc_info=context.error)
