@@ -19,7 +19,7 @@ class Telegram_bot(LoggerSuper):
 
         # Start the Bot
         self.logger.info(f'Запустил телеграм бота. Админы {self.admins}')
-        self.updater.start_polling(clean=False)
+        self.updater.start_polling()
 
     def error_handler(self, update: object, context: CallbackContext) -> None:
         self.logger.error(msg="Exception while handling an update:", exc_info=context.error)
