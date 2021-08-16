@@ -22,7 +22,6 @@ if __name__ == '__main__':
     logger = logging.getLogger('main')
 
     if WRITE_LOG_TO_FILE:
-
         logging.basicConfig(filename='leskraft_barrier.txt', filemode='w', format=LOG_FORMAT, level=LOG_LEVEL,
                             datefmt='%d/%m/%y %H:%M:%S')
     else:
