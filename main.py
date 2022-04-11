@@ -54,7 +54,7 @@ if __name__ == '__main__':
     barrier = Barrier(http_getter)
     http_getter.add_observer(barrier)
     led_assembly = LedAssembly(http_getter)
-    telegram_bot = Telegram_bot(telegram_api_token, barrier, telegram_bot_admins)
+    #telegram_bot = Telegram_bot(telegram_api_token, barrier, telegram_bot_admins)
 
     keyboard_input = Keyboard(data_base, barrier)
     while BaseClass.working():
